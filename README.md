@@ -2,9 +2,9 @@
 
 **The Open-Source Library of AI Agent Skills.**
 
-**Not a directory of links — a ready-to-use collection of 70+ complete, universal skills for any agent.**
+**Not a directory of links — a ready-to-use collection of 90+ complete, universal skills for any agent.**
 
-[![Skills Count](https://img.shields.io/badge/Skills-70+-blue?style=flat-square)](https://github.com/seb1n/awesome-ai-agent-skills)
+[![Skills Count](https://img.shields.io/badge/Skills-90+-blue?style=flat-square)](https://github.com/seb1n/awesome-ai-agent-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](./CONTRIBUTING.md)
 
@@ -14,7 +14,7 @@
 
 While other collections link to external repositories, **Awesome AI Agent Skills** provides a self-contained, ready-to-use library of complete skills. Every skill in this repository is a full `SKILL.md` file with detailed instructions, workflows, and implementation guidance.
 
-Our focus is on **universal, platform-agnostic skills** that make any AI agent better at general, real-world tasks like code review, security auditing, data analysis, and technical writing. This is not a list of vendor-specific tools, but a foundational library for building capable, autonomous agents.
+Our focus is on **universal, platform-agnostic skills** that make any AI agent better at general, real-world tasks like code review, security auditing, data analysis, technical writing, legal compliance, financial modeling, sales, and customer success. This is not a list of vendor-specific tools, but a foundational library for building capable, autonomous agents.
 
 Each skill follows the open [SKILL.md standard](https://agentskills.io/specification), making them compatible with leading AI coding assistants and agent platforms, including Claude Code, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, Windsurf, and more.
 
@@ -80,6 +80,16 @@ Each skill is a self-contained directory with a `SKILL.md` file. To use a skill,
 | [presentation-creation](./communication/presentation-creation) | Create slide decks and presentations |
 | [report-generation](./communication/report-generation) | Generate structured business and technical reports |
 
+### Customer Success
+
+| Skill | Description |
+|-------|-------------|
+| [churn-analysis](./customer-success/churn-analysis) | Identify at-risk accounts and churn indicators |
+| [customer-feedback-analysis](./customer-success/customer-feedback-analysis) | Analyze NPS, CSAT, and qualitative feedback for themes |
+| [knowledge-base-article-writing](./customer-success/knowledge-base-article-writing) | Write help center articles and FAQ entries |
+| [onboarding-playbook-creation](./customer-success/onboarding-playbook-creation) | Design customer onboarding workflows and checklists |
+| [ticket-triage](./customer-success/ticket-triage) | Classify, prioritize, and route support tickets |
+
 ### Context Engineering
 
 | Skill | Description |
@@ -120,6 +130,16 @@ Each skill is a self-contained directory with a `SKILL.md` file. To use a skill,
 | [user-flow-mapping](./design-and-ui-ux/user-flow-mapping) | Map user journeys and interaction flows |
 | [wireframing](./design-and-ui-ux/wireframing) | Create wireframes and low-fidelity mockups |
 
+### Finance & Accounting
+
+| Skill | Description |
+|-------|-------------|
+| [budget-planning](./finance-and-accounting/budget-planning) | Create and manage budgets with variance analysis |
+| [expense-categorization](./finance-and-accounting/expense-categorization) | Classify expenses by category, department, and tax deductibility |
+| [financial-modeling](./finance-and-accounting/financial-modeling) | Build financial projections, P&L, and DCF models |
+| [financial-report-generation](./finance-and-accounting/financial-report-generation) | Generate balance sheets, cash flow statements, and financial summaries |
+| [invoice-processing](./finance-and-accounting/invoice-processing) | Extract, validate, and categorize invoice data |
+
 ### DevOps & Infrastructure
 
 | Skill | Description |
@@ -129,6 +149,16 @@ Each skill is a self-contained directory with a `SKILL.md` file. To use a skill,
 | [docker-compose-setup](./devops-and-infrastructure/docker-compose-setup) | Create Docker Compose configurations for multi-service apps |
 | [infrastructure-as-code](./devops-and-infrastructure/infrastructure-as-code) | Define infrastructure using Terraform, Pulumi, or CloudFormation |
 | [kubernetes-deployment](./devops-and-infrastructure/kubernetes-deployment) | Deploy and manage applications on Kubernetes |
+
+### Legal & Compliance
+
+| Skill | Description |
+|-------|-------------|
+| [compliance-checklist-generation](./legal-and-compliance/compliance-checklist-generation) | Create compliance checklists for SOC2, HIPAA, PCI-DSS, and GDPR |
+| [contract-review](./legal-and-compliance/contract-review) | Analyze contracts for risks, obligations, and key clauses |
+| [license-analysis](./legal-and-compliance/license-analysis) | Analyze open-source license compatibility and obligations |
+| [privacy-policy-drafting](./legal-and-compliance/privacy-policy-drafting) | Generate GDPR/CCPA-compliant privacy policies |
+| [terms-of-service-generation](./legal-and-compliance/terms-of-service-generation) | Draft Terms of Service documents for web apps and SaaS |
 
 ### Marketing & SEO
 
@@ -159,6 +189,16 @@ Each skill is a self-contained directory with a `SKILL.md` file. To use a skill,
 | [knowledge-graph-creation](./research-and-knowledge/knowledge-graph-creation) | Build knowledge graphs from unstructured data |
 | [literature-review](./research-and-knowledge/literature-review) | Review and synthesize academic literature |
 | [summarization](./research-and-knowledge/summarization) | Summarize long documents and articles |
+
+### Sales
+
+| Skill | Description |
+|-------|-------------|
+| [competitive-battlecard-creation](./sales/competitive-battlecard-creation) | Build sales battlecards for competitive positioning |
+| [crm-data-enrichment](./sales/crm-data-enrichment) | Enrich CRM records with firmographic and contact data |
+| [lead-scoring](./sales/lead-scoring) | Score and prioritize leads based on fit and engagement signals |
+| [proposal-generation](./sales/proposal-generation) | Create tailored sales proposals and RFP responses |
+| [sales-email-sequences](./sales/sales-email-sequences) | Design multi-touch outbound email sequences |
 
 ### Security
 
