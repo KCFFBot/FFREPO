@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>China Travel Checklist</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+        h1 {
+            text-align: center;
+            color: #000;
+            font-weight: 600;
+        }
+        .trip-info {
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #000;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #000;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .trip-info {
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #555;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            background: #fff;
+            margin-bottom: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #666;
+        }
+        .item.checked {
+            opacity: 0.5;
+        }
+        .item.checked span {
+            text-decoration: line-through;
+        }
+        .item-name {
+            flex: 1;
+            color: #444;
+        }
+        .item-qty {
+            color: #000;
+            font-size: 15px;
+            font-weight: 500;
+            min-width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .item-name {
+            flex: 1;
+            color: #000;
+            font-size: 15px;
+        }
+        .mountain-tag {
+            background: #e8f5e9;
+            color: #4caf50;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .town-tag {
+            background: #e3f2fd;
+            color: #2196f3;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #555;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .progress-bar {
+            width: 100px;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #888;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="stats">
+        <div>Packed: <span id="packed">0</span> / <span id="total">0</span></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        <div class="item"><input type="checkbox" id="g10"><span class="item-name">Wet tissue</span><span class="item-qty">1 pack</span></div>
+    </div>
+    </div>
+
+    <h1>🇨🇳 China Travel Checklist</h1>
+    
+    <div class="trip-info">
+        <strong>Trip: April 13 - April 19</strong><br>
+        2 days mountain (5-10°C) | 5 days in town
+    </div>
+
+    <div class="section">
+        <h2>📄 Documents & Money</h2>
+        <div class="item"><input type="checkbox" id="d1"><span class="item-name">Passport</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="d3"><span class="item-name">Travel insurance documents</span><span class="item-qty">1 copy</span></div>
+        <div class="item"><input type="checkbox" id="d4"><span class="item-name">Flight tickets</span><span class="item-qty">2 (round trip)</span></div>
+        <div class="item"><input type="checkbox" id="d5"><span class="item-name">Hotel reservations</span><span class="item-qty">6 nights</span></div>
+        <div class="item"><input type="checkbox" id="d6"><span class="item-name">Cash (RMB)</span><span class="item-qty">¥2000-3000</span></div>
+        <div class="item"><input type="checkbox" id="d7"><span class="item-name">Credit cards</span><span class="item-qty">1-2</span></div>
+    </div>
+
+    <div class="section">
+        <h2>🧥 Mountain Clothing (5-10°C)</h2>
+        <div class="item"><input type="checkbox" id="m1"><span class="item-name">Winter jacket</span><span class="item-qty">1</span><span class="mountain-tag">Mountain</span></div>
+        <div class="item"><input type="checkbox" id="m2"><span class="item-name">Long sleeve / warm layer</span><span class="item-qty">2-3</span><span class="mountain-tag">Mountain</span></div>
+    </div>
+
+    <div class="section">
+        <h2>👕 Town Clothing (April weather)</h2>
+        <div class="item"><input type="checkbox" id="t1"><span class="item-name">T-shirts</span><span class="item-qty">6</span><span class="town-tag">Town</span></div>
+        <div class="item"><input type="checkbox" id="t5"><span class="item-name">Underwear</span><span class="item-qty">8 pairs</span></div>
+        <div class="item"><input type="checkbox" id="t6"><span class="item-name">Socks</span><span class="item-qty">8 pairs</span></div>
+        <div class="item"><input type="checkbox" id="t7"><span class="item-name">Sleepwear</span><span class="item-qty">2 sets</span></div>
+    </div>
+
+    <div class="section">
+        <h2>📱 Electronics</h2>
+        <div class="item"><input type="checkbox" id="e1"><span class="item-name">Phone</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="e2"><span class="item-name">Charger wire</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="e3"><span class="item-name">Power adapter (China Type A/B)</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="e4"><span class="item-name">Portable power bank</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="e5"><span class="item-name">Camera</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="e6"><span class="item-name">Earphones</span><span class="item-qty">1</span></div>
+    </div>
+
+    <div class="section">
+        <h2>🧴 Toiletries & Medicine</h2>
+        <div class="item"><input type="checkbox" id="g1"><span class="item-name">Toothbrush</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="g2"><span class="item-name">Toothpaste</span><span class="item-qty">1 tube</span></div>
+        <div class="item"><input type="checkbox" id="g3"><span class="item-name">Shampoo</span><span class="item-qty">1 small</span></div>
+        <div class="item"><input type="checkbox" id="g4"><span class="item-name">Shower gel</span><span class="item-qty">1 small</span></div>
+        <div class="item"><input type="checkbox" id="g5"><span class="item-name">Deodorant</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="g6"><span class="item-name">Sunscreen</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="g7"><span class="item-name">Personal medications</span><span class="item-qty">as needed</span></div>
+        <div class="item"><input type="checkbox" id="g8"><span class="item-name">Lip balm</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="g9"><span class="item-name">Hand cream</span><span class="item-qty">1</span></div>
+    </div>
+
+    <div class="section">
+        <h2>🎒 Other Essentials</h2>
+        <div class="item"><input type="checkbox" id="o1"><span class="item-name">Day backpack</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="o2"><span class="item-name">Umbrella</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="o4"><span class="item-name">Sunglasses</span><span class="item-qty">1</span></div>
+        <div class="item"><input type="checkbox" id="o5"><span class="item-name">Travel pillow</span><span class="item-qty">1</span></div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const packedSpan = document.getElementById('packed');
+        const totalSpan = document.getElementById('total');
+        const progressBar = document.getElementById('progress');
+
+        totalSpan.textContent = checkboxes.length;
+
+        function saveState() {
+            const checkedIds = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.id);
+            localStorage.setItem('chinaChecklist', JSON.stringify(checkedIds));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('chinaChecklist');
+            if (saved) {
+                const checkedIds = JSON.parse(saved);
+                checkboxes.forEach(cb => {
+                    if (checkedIds.includes(cb.id)) {
+                        cb.checked = true;
+                        cb.closest('.item').classList.add('checked');
+                    }
+                });
+            }
+        }
+
+        function updateStats() {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            packedSpan.textContent = checked;
+            const percent = (checked / checkboxes.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('.item').classList.toggle('checked', this.checked);
+                saveState();
+                updateStats();
+            });
+            const item = cb.closest('.item');
+            item.addEventListener('click', function(e) {
+                if (e.target !== cb) {
+                    cb.checked = !cb.checked;
+                    cb.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+
+        loadState();
+        updateStats();
+    </script>
+</body>
+</html>
