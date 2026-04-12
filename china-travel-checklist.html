@@ -286,7 +286,7 @@
 
     <div id="checklistContainer"></div>
 
-    <div class="section">
+    <div class="section" id="addSectionDiv">
         <h2>➕ Add Section</h2>
         <div style="display: flex; gap: 10px; margin-top: 10px;">
             <input type="text" id="newSectionName" placeholder="Section name (e.g., 🧴 Toiletries)" style="flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
@@ -604,8 +604,13 @@
                 lists = {
                     default: JSON.parse(JSON.stringify(templates.china))
                 };
+                lists.default.isCustom = false;
                 saveLists();
             }
+        }
+
+        function isListEditable() {
+            return lists[currentListId].isCustom !== false;
         }
 
         function saveLists() {
@@ -649,6 +654,7 @@
                 document.getElementById('tripDetails').textContent = 'Click to set trip details';
             }
 
+            document.getElementById('addSectionDiv').style.display = isListEditable() ? 'block' : 'none';
             renderChecklist();
         }
 
@@ -656,6 +662,7 @@
             const container = document.getElementById('checklistContainer');
             container.innerHTML = '';
             const list = lists[currentListId];
+            const editable = isListEditable();
 
             list.sections.forEach((section, sIdx) => {
                 const sectionDiv = document.createElement('div');
@@ -663,7 +670,7 @@
                 sectionDiv.innerHTML = `
                     <div class="section-header">
                         <h2>${section.name}</h2>
-                        <button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>
+                        ${editable ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
                     </div>
                 `;
                 section.items.forEach((item, iIdx) => {
@@ -673,20 +680,22 @@
                     itemDiv.innerHTML = `
                         <input type="checkbox" ${checked} onchange="toggleItem(${sIdx}, ${iIdx})">
                         <span class="item-name">${item.name}</span>
-                        <input type="text" class="item-qty" value="${item.qty}" onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
-                        <button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">✕</button>
+                        <input type="text" class="item-qty" value="${item.qty}" ${!editable ? 'readonly' : ''} onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
+                        ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">✕</button>` : ''}
                     `;
                     sectionDiv.appendChild(itemDiv);
                 });
 
-                const addItemRow = document.createElement('div');
-                addItemRow.className = 'add-item-row';
-                addItemRow.innerHTML = `
-                    <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
-                    <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
-                    <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
-                `;
-                sectionDiv.appendChild(addItemRow);
+                if (editable) {
+                    const addItemRow = document.createElement('div');
+                    addItemRow.className = 'add-item-row';
+                    addItemRow.innerHTML = `
+                        <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
+                        <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
+                        <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
+                    `;
+                    sectionDiv.appendChild(addItemRow);
+                }
                 container.appendChild(sectionDiv);
             });
 
@@ -800,6 +809,7 @@
             const templateData = templates[template];
             lists[newId] = JSON.parse(JSON.stringify(templateData));
             lists[newId].name = name;
+            lists[newId].isCustom = true;
             
             currentListId = newId;
             saveLists();
