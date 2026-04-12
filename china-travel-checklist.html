@@ -349,7 +349,7 @@
     <script>
         const templates = {
             china: {
-                name: 'China Trip',
+                name: 'Travel Checklist',
                 sections: [
                     { name: '📄 Documents & Money', items: [
                         { name: 'Passport', qty: 1 },
@@ -600,6 +600,10 @@
             const saved = localStorage.getItem('travelChecklistLists');
             if (saved) {
                 lists = JSON.parse(saved);
+                if (lists.default && lists.default.name === 'China Trip') {
+                    lists.default.name = 'Travel Checklist';
+                    saveLists();
+                }
             } else {
                 lists = {
                     default: JSON.parse(JSON.stringify(templates.china))
