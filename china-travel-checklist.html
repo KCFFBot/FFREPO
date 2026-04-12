@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>China Travel Checklist</title>
+    <title>Travel Checklist</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -17,14 +17,32 @@
             color: #000;
             font-weight: 600;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .menu-btn {
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
         .trip-info {
             background: #fff;
             border: 1px solid #ddd;
-            color: #000;
             padding: 15px;
             border-radius: 4px;
             text-align: center;
             margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .trip-info:hover {
+            background: #f5f5f5;
         }
         .stats {
             position: fixed;
@@ -32,19 +50,23 @@
             right: 20px;
             background: #fff;
             border: 1px solid #ddd;
-            color: #000;
+            color: #555;
             padding: 15px;
             border-radius: 4px;
             font-size: 14px;
         }
-        .trip-info {
-            background: #fff;
-            border: 1px solid #ddd;
-            color: #555;
-            padding: 15px;
-            border-radius: 4px;
-            text-align: center;
-            margin-bottom: 20px;
+        .progress-bar {
+            width: 100px;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #888;
+            border-radius: 2px;
+            transition: width 0.3s;
         }
         .section {
             background: #fff;
@@ -53,14 +75,28 @@
             border: 1px solid #eee;
             border-radius: 4px;
         }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
         .section h2 {
-            margin-top: 0;
+            margin: 0;
             color: #000;
             font-weight: 600;
             font-size: 16px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+        }
+        .delete-section-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
         }
         .item {
             display: flex;
@@ -87,7 +123,8 @@
         }
         .item-name {
             flex: 1;
-            color: #444;
+            color: #000;
+            font-size: 15px;
         }
         .item-qty {
             color: #000;
@@ -96,55 +133,143 @@
             min-width: 100px;
             text-align: right;
             margin-right: 10px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
         }
-        .item-name {
-            flex: 1;
-            color: #000;
-            font-size: 15px;
-        }
-        .mountain-tag {
-            background: #e8f5e9;
-            color: #4caf50;
-            padding: 2px 8px;
+        .delete-item-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 4px 8px;
             border-radius: 4px;
+            cursor: pointer;
             font-size: 12px;
-            margin-left: 8px;
+            display: none;
         }
-        .town-tag {
-            background: #e3f2fd;
-            color: #2196f3;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-left: 8px;
+        .item:hover .delete-item-btn {
+            display: block;
         }
-        .stats {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #fff;
+        .add-item-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .add-item-row input {
+            padding: 8px;
             border: 1px solid #ddd;
-            color: #555;
-            padding: 15px;
             border-radius: 4px;
             font-size: 14px;
         }
-        .progress-bar {
-            width: 100px;
-            height: 4px;
-            background: #eee;
-            border-radius: 2px;
-            margin-top: 8px;
+        .add-item-row input[type="text"] {
+            flex: 2;
         }
-        .progress-fill {
+        .add-item-row input[type="number"] {
+            flex: 1;
+            width: 60px;
+        }
+        .add-btn {
+            padding: 8px 16px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: #888;
-            border-radius: 2px;
-            transition: width 0.3s;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .modal h2 {
+            margin-top: 0;
+        }
+        .modal input, .modal select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .save-btn {
+            background: #4caf50;
+            color: white;
+        }
+        .cancel-btn {
+            background: #ccc;
+            color: #333;
+        }
+        .list-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .list-tab {
+            padding: 8px 16px;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .list-tab.active {
+            background: #333;
+            color: white;
+        }
+        .add-list-btn {
+            padding: 8px 16px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .edit-icon {
+            font-size: 12px;
+            color: #666;
+            margin-left: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1 id="pageTitle">Travel Checklist</h1>
+        <button class="menu-btn" onclick="showSettingsModal()">⚙️ Settings</button>
+    </div>
+
     <div class="stats">
         <div>Packed: <span id="packed">0</span> / <span id="total">0</span></div>
         <div class="progress-bar">
@@ -152,221 +277,574 @@
         </div>
     </div>
 
-    <h1>🇨🇳 China Travel Checklist</h1>
-    
-    <div class="trip-info">
-        <strong>Trip: April 13 - April 19</strong><br>
-        2 days mountain (5-10°C) | 5 days in town
+    <div class="list-selector" id="listSelector"></div>
+
+    <div class="trip-info" id="tripInfo" onclick="showTripModal()">
+        <strong id="tripDates">Trip: Not set</strong><br>
+        <span id="tripDetails">Click to set trip details</span>
     </div>
 
-    <div class="section">
-        <h2>📄 Documents & Money</h2>
-        <div class="item"><input type="checkbox" id="d1"><span class="item-name">Passport</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="d3"><span class="item-name">Travel insurance documents</span><span class="item-qty">1 copy</span></div>
-        <div class="item"><input type="checkbox" id="d4"><span class="item-name">Flight tickets</span><span class="item-qty">2 (round trip)</span></div>
-        <div class="item"><input type="checkbox" id="d5"><span class="item-name">Hotel reservations</span><span class="item-qty">6 nights</span></div>
-        <div class="item"><input type="checkbox" id="d6"><span class="item-name">Cash (RMB)</span><span class="item-qty">¥2000-3000</span></div>
-        <div class="item"><input type="checkbox" id="d7"><span class="item-name">Credit cards</span><span class="item-qty">1-2</span></div>
-    </div>
+    <div id="checklistContainer"></div>
 
     <div class="section">
-        <h2>🧥 Mountain Clothing (5-10°C)</h2>
-        <div class="item"><input type="checkbox" id="m1"><span class="item-name">Winter jacket</span><span class="item-qty">1</span><span class="mountain-tag">Mountain</span></div>
-        <div class="item"><input type="checkbox" id="m2"><span class="item-name">Long sleeve / warm layer</span><span class="item-qty">2-3</span><span class="mountain-tag">Mountain</span></div>
-    </div>
-
-    <div class="section">
-        <h2>👕 Town Clothing (April weather)</h2>
-        <div class="item"><input type="checkbox" id="t1"><span class="item-name">T-shirts</span><span class="item-qty">6</span><span class="town-tag">Town</span></div>
-        <div class="item"><input type="checkbox" id="t2"><span class="item-name">Long pants</span><span class="item-qty">6</span><span class="town-tag">Town</span></div>
-        <div class="item"><input type="checkbox" id="t5"><span class="item-name">Underwear</span><span class="item-qty">8 pairs</span></div>
-        <div class="item"><input type="checkbox" id="t6"><span class="item-name">Socks</span><span class="item-qty">8 pairs</span></div>
-        <div class="item"><input type="checkbox" id="t7"><span class="item-name">Sleepwear</span><span class="item-qty">2 sets</span></div>
-    </div>
-
-    <div class="section">
-        <h2>📱 Electronics</h2>
-        <div class="item"><input type="checkbox" id="e1"><span class="item-name">Phone</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="e2"><span class="item-name">Charger wire</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="e3"><span class="item-name">Power adapter (China Type A/B)</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="e4"><span class="item-name">Portable power bank</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="e5"><span class="item-name">Camera</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="e6"><span class="item-name">Earphones</span><span class="item-qty">1</span></div>
-    </div>
-
-    <div class="section">
-        <h2>🧴 Toiletries & Medicine</h2>
-        <div class="item"><input type="checkbox" id="g1"><span class="item-name">Toothbrush</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g2"><span class="item-name">Toothpaste</span><span class="item-qty">1 tube</span></div>
-        <div class="item"><input type="checkbox" id="g3"><span class="item-name">Shampoo</span><span class="item-qty">1 small</span></div>
-        <div class="item"><input type="checkbox" id="g4"><span class="item-name">Shower gel</span><span class="item-qty">1 small</span></div>
-        <div class="item"><input type="checkbox" id="g5"><span class="item-name">Deodorant</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g6"><span class="item-name">Sunscreen</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g7"><span class="item-name">Personal medications</span><span class="item-qty">as needed</span></div>
-        <div class="item"><input type="checkbox" id="g8"><span class="item-name">Lip balm</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g9"><span class="item-name">Hand cream</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g10"><span class="item-name">Wet tissue</span><span class="item-qty">1 pack</span></div>
-        <div class="item"><input type="checkbox" id="g11"><span class="item-name">Inhaler</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g12"><span class="item-name">Face cleansing</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g13"><span class="item-name">Perfume</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="g14"><span class="item-name">Face cream</span><span class="item-qty">1</span></div>
-    </div>
-
-    <div class="section">
-        <h2>🎒 Other Essentials</h2>
-        <div class="item"><input type="checkbox" id="o1"><span class="item-name">Day backpack</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="o2"><span class="item-name">Umbrella</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="o4"><span class="item-name">Sunglasses</span><span class="item-qty">1</span></div>
-        <div class="item"><input type="checkbox" id="o5"><span class="item-name">Travel pillow</span><span class="item-qty">1</span></div>
-    </div>
-
-    <div class="section">
-        <h2>🎁 Gifts</h2>
-        <div class="item"><input type="checkbox" id="gift1"><span class="item-name">Gifts for friends/family</span><span class="item-qty">as needed</span></div>
-    </div>
-
-    <div class="section">
-        <h2>➕ Custom Items</h2>
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="text" id="customItemName" placeholder="Item name" style="flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <input type="text" id="customItemQty" placeholder="Qty" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <button onclick="addCustomItem()" style="padding: 8px 16px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">Add</button>
+        <h2>➕ Add Section</h2>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <input type="text" id="newSectionName" placeholder="Section name (e.g., 🧴 Toiletries)" style="flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <button class="add-btn" onclick="addNewSection()">Add</button>
         </div>
-        <div id="customItems"></div>
+    </div>
+
+    <!-- Trip Info Modal -->
+    <div class="modal" id="tripModal">
+        <div class="modal-content">
+            <h2>✏️ Edit Trip</h2>
+            <label>Country/Destination</label>
+            <input type="text" id="tripCountry" placeholder="e.g., China, Japan">
+            <label>Start Date</label>
+            <input type="date" id="tripStart">
+            <label>End Date</label>
+            <input type="date" id="tripEnd">
+            <label>Notes (e.g., 2 days mountain, 5 days city)</label>
+            <input type="text" id="tripNotes" placeholder="e.g., 2 days mountain (5-10°C) | 5 days in town">
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="saveTripInfo()">Save</button>
+                <button class="cancel-btn" onclick="closeModal('tripModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2>⚙️ Settings</h2>
+            <button class="save-btn" style="width: 100%; margin-bottom: 10px;" onclick="showNewListModal()">📋 Create New List</button>
+            <button class="save-btn" style="width: 100%; background: #666;" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+            <button class="cancel-btn" style="width: 100%; margin-top: 10px;" onclick="closeModal('settingsModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- New List Modal -->
+    <div class="modal" id="newListModal">
+        <div class="modal-content">
+            <h2>📋 Create New List</h2>
+            <label>List Name</label>
+            <input type="text" id="newListName" placeholder="e.g., China Trip, Japan Adventure">
+            <label>Based on Template</label>
+            <select id="templateSelect">
+                <option value="china">China Trip</option>
+                <option value="japan">Japan Trip</option>
+                <option value="europe">Europe Trip</option>
+                <option value="beach">Beach Vacation</option>
+                <option value="business">Business Trip</option>
+                <option value="camping">Camping</option>
+                <option value="empty">Empty List</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="createNewList()">Create</button>
+                <button class="cancel-btn" onclick="closeModal('newListModal')">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const packedSpan = document.getElementById('packed');
-        const totalSpan = document.getElementById('total');
-        const progressBar = document.getElementById('progress');
+        const templates = {
+            china: {
+                name: 'China Trip',
+                sections: [
+                    { name: '📄 Documents & Money', items: [
+                        { name: 'Passport', qty: 1 },
+                        { name: 'Travel insurance documents', qty: '1 copy' },
+                        { name: 'Flight tickets', qty: '2 (round trip)' },
+                        { name: 'Hotel reservations', qty: '6 nights' },
+                        { name: 'Cash (RMB)', qty: '¥2000-3000' },
+                        { name: 'Credit cards', qty: '1-2' }
+                    ]},
+                    { name: '🧥 Mountain Clothing (5-10°C)', items: [
+                        { name: 'Winter jacket', qty: 1, tag: 'Mountain' },
+                        { name: 'Long sleeve / warm layer', qty: '2-3', tag: 'Mountain' }
+                    ]},
+                    { name: '👕 Town Clothing', items: [
+                        { name: 'T-shirts', qty: 6, tag: 'Town' },
+                        { name: 'Long pants', qty: 6, tag: 'Town' },
+                        { name: 'Underwear', qty: '8 pairs' },
+                        { name: 'Socks', qty: '8 pairs' },
+                        { name: 'Sleepwear', qty: '2 sets' }
+                    ]},
+                    { name: '📱 Electronics', items: [
+                        { name: 'Phone', qty: 1 },
+                        { name: 'Charger wire', qty: 1 },
+                        { name: 'Power adapter (China Type A/B)', qty: 1 },
+                        { name: 'Portable power bank', qty: 1 },
+                        { name: 'Camera', qty: 1 },
+                        { name: 'Earphones', qty: 1 }
+                    ]},
+                    { name: '🧴 Toiletries & Medicine', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: '1 tube' },
+                        { name: 'Shampoo', qty: '1 small' },
+                        { name: 'Shower gel', qty: '1 small' },
+                        { name: 'Deodorant', qty: 1 },
+                        { name: 'Sunscreen', qty: 1 },
+                        { name: 'Personal medications', qty: 'as needed' },
+                        { name: 'Lip balm', qty: 1 },
+                        { name: 'Hand cream', qty: 1 },
+                        { name: 'Wet tissue', qty: '1 pack' },
+                        { name: 'Inhaler', qty: 1 },
+                        { name: 'Face cleansing', qty: 1 },
+                        { name: 'Perfume', qty: 1 },
+                        { name: 'Face cream', qty: 1 }
+                    ]},
+                    { name: '🎒 Other Essentials', items: [
+                        { name: 'Day backpack', qty: 1 },
+                        { name: 'Umbrella', qty: 1 },
+                        { name: 'Sunglasses', qty: 1 },
+                        { name: 'Travel pillow', qty: 1 }
+                    ]},
+                    { name: '🎁 Gifts', items: [
+                        { name: 'Gifts for friends/family', qty: 'as needed' }
+                    ]}
+                ]
+            },
+            japan: {
+                name: 'Japan Trip',
+                sections: [
+                    { name: '📄 Documents & Money', items: [
+                        { name: 'Passport', qty: 1 },
+                        { name: 'Visa (if needed)', qty: 1 },
+                        { name: 'JR Pass', qty: 1 },
+                        { name: 'Flight tickets', qty: '2 (round trip)' },
+                        { name: 'Hotel reservations', qty: '6 nights' },
+                        { name: 'Cash (JPY)', qty: '¥30000-50000' },
+                        { name: 'Credit cards', qty: '1-2' }
+                    ]},
+                    { name: '👕 Clothing', items: [
+                        { name: 'T-shirts', qty: 5, tag: 'Town' },
+                        { name: 'Pants', qty: 3, tag: 'Town' },
+                        { name: 'Underwear', qty: '7 pairs' },
+                        { name: 'Socks', qty: '7 pairs' },
+                        { name: 'Comfortable walking shoes', qty: 1 },
+                        { name: 'Light jacket', qty: 1 }
+                    ]},
+                    { name: '📱 Electronics', items: [
+                        { name: 'Phone', qty: 1 },
+                        { name: 'Charger', qty: 1 },
+                        { name: 'Portable WiFi/Pocket WiFi', qty: 1 },
+                        { name: 'Camera', qty: 1 },
+                        { name: 'Earphones', qty: 1 }
+                    ]},
+                    { name: '🧴 Toiletries', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: 1 },
+                        { name: 'Shampoo', qty: '1 small' },
+                        { name: 'Skincare products', qty: 1 },
+                        { name: 'Sunscreen', qty: 1 },
+                        { name: 'Medications', qty: 'as needed' }
+                    ]},
+                    { name: '🎒 Essentials', items: [
+                        { name: 'Backpack', qty: 1 },
+                        { name: 'Umbrella', qty: 1 },
+                        { name: 'Travel pillow', qty: 1 }
+                    ]}
+                ]
+            },
+            europe: {
+                name: 'Europe Trip',
+                sections: [
+                    { name: '📄 Documents', items: [
+                        { name: 'Passport', qty: 1 },
+                        { name: 'Travel insurance', qty: 1 },
+                        { name: 'Flight tickets', qty: 2 },
+                        { name: 'Train tickets', qty: 'as needed' },
+                        { name: 'Hotel bookings', qty: 'as needed' },
+                        { name: 'EUR cash', qty: '€500-1000' },
+                        { name: 'Credit cards', qty: '1-2' }
+                    ]},
+                    { name: '👕 Clothing', items: [
+                        { name: 'T-shirts', qty: 5 },
+                        { name: 'Pants/Jeans', qty: 3 },
+                        { name: 'Underwear', qty: '7 pairs' },
+                        { name: 'Socks', qty: '7 pairs' },
+                        { name: 'Comfortable shoes', qty: 1 },
+                        { name: 'Light sweater/jacket', qty: 1 }
+                    ]},
+                    { name: '📱 Electronics', items: [
+                        { name: 'Phone', qty: 1 },
+                        { name: 'Charger', qty: 1 },
+                        { name: 'Universal adapter', qty: 1 },
+                        { name: 'Camera', qty: 1 }
+                    ]},
+                    { name: '🧴 Toiletries', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: 1 },
+                        { name: 'Shampoo', qty: '1 small' },
+                        { name: 'Sunscreen', qty: 1 }
+                    ]}
+                ]
+            },
+            beach: {
+                name: 'Beach Vacation',
+                sections: [
+                    { name: '📄 Documents', items: [
+                        { name: 'Passport', qty: 1 },
+                        { name: 'Flight tickets', qty: 2 },
+                        { name: 'Hotel booking', qty: 'as needed' },
+                        { name: 'Travel insurance', qty: 1 }
+                    ]},
+                    { name: '🏖️ Beach Items', items: [
+                        { name: 'Swimsuit', qty: 2 },
+                        { name: 'Sunglasses', qty: 1 },
+                        { name: 'Sunscreen', qty: 1 },
+                        { name: 'Beach towel', qty: 1 },
+                        { name: 'Flip flops', qty: 1 },
+                        { name: 'Beach bag', qty: 1 },
+                        { name: 'Hat/Cap', qty: 1 }
+                    ]},
+                    { name: '👕 Clothing', items: [
+                        { name: 'Shorts', qty: 3 },
+                        { name: 'T-shirts', qty: 4 },
+                        { name: 'Underwear', qty: '7 pairs' },
+                        { name: 'Light dress/coverup', qty: 1 }
+                    ]},
+                    { name: '🧴 Toiletries', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: 1 },
+                        { name: 'Shampoo', qty: 1 },
+                        { name: 'Aloe vera gel', qty: 1 }
+                    ]}
+                ]
+            },
+            business: {
+                name: 'Business Trip',
+                sections: [
+                    { name: '📄 Documents', items: [
+                        { name: 'Passport/ID', qty: 1 },
+                        { name: 'Flight tickets', qty: 2 },
+                        { name: 'Hotel confirmation', qty: 1 },
+                        { name: 'Business cards', qty: 'as needed' },
+                        { name: 'Meeting agenda', qty: 1 }
+                    ]},
+                    { name: '👔 Business Attire', items: [
+                        { name: 'Suits', qty: 2 },
+                        { name: 'Dress shirts', qty: 3 },
+                        { name: 'Ties', qty: 2 },
+                        { name: 'Dress shoes', qty: 1 },
+                        { name: 'Belt', qty: 1 },
+                        { name: 'Underwear', qty: '4 pairs' },
+                        { name: 'Socks', qty: '4 pairs' }
+                    ]},
+                    { name: '📱 Electronics', items: [
+                        { name: 'Laptop', qty: 1 },
+                        { name: 'Charger', qty: 1 },
+                        { name: 'Phone', qty: 1 },
+                        { name: 'Portable battery', qty: 1 }
+                    ]},
+                    { name: '🧴 Toiletries', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: 1 },
+                        { name: 'Deodorant', qty: 1 },
+                        { name: 'Shaving kit', qty: 1 }
+                    ]}
+                ]
+            },
+            camping: {
+                name: 'Camping Trip',
+                sections: [
+                    { name: '📄 Documents', items: [
+                        { name: 'ID/Passport', qty: 1 },
+                        { name: 'Campsite reservation', qty: 1 },
+                        { name: 'Car insurance', qty: 1 }
+                    ]},
+                    { name: '⛺ Camping Gear', items: [
+                        { name: 'Tent', qty: 1 },
+                        { name: 'Sleeping bag', qty: 1 },
+                        { name: 'Sleeping pad', qty: 1 },
+                        { name: 'Flashlight/Headlamp', qty: 1 },
+                        { name: 'First aid kit', qty: 1 },
+                        { name: 'Multi-tool', qty: 1 },
+                        { name: 'Fire starter', qty: 1 },
+                        { name: 'Water bottle', qty: 1 }
+                    ]},
+                    { name: '👕 Clothing', items: [
+                        { name: 'Hiking boots', qty: 1 },
+                        { name: 'Rain jacket', qty: 1 },
+                        { name: 'Warm layers', qty: 2 },
+                        { name: 'Hiking pants', qty: 2 },
+                        { name: 'T-shirts', qty: 3 },
+                        { name: 'Underwear', qty: '4 pairs' },
+                        { name: 'Socks', qty: '4 pairs' }
+                    ]},
+                    { name: '🧴 Toiletries', items: [
+                        { name: 'Toothbrush', qty: 1 },
+                        { name: 'Toothpaste', qty: 1 },
+                        { name: 'Sunscreen', qty: 1 },
+                        { name: 'Insect repellent', qty: 1 }
+                    ]}
+                ]
+            },
+            empty: {
+                name: 'New List',
+                sections: []
+            }
+        };
 
-        totalSpan.textContent = checkboxes.length;
+        let lists = {};
+        let currentListId = 'default';
 
-        function saveState() {
-            const checkedIds = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.id);
-            localStorage.setItem('chinaChecklist', JSON.stringify(checkedIds));
+        function init() {
+            loadLists();
+            renderListTabs();
+            loadCurrentList();
         }
 
-        function loadState() {
-            const saved = localStorage.getItem('chinaChecklist');
+        function loadLists() {
+            const saved = localStorage.getItem('travelChecklistLists');
             if (saved) {
-                const checkedIds = JSON.parse(saved);
-                checkboxes.forEach(cb => {
-                    if (checkedIds.includes(cb.id)) {
-                        cb.checked = true;
-                        cb.closest('.item').classList.add('checked');
-                    }
+                lists = JSON.parse(saved);
+            } else {
+                lists = {
+                    default: JSON.parse(JSON.stringify(templates.china))
+                };
+                saveLists();
+            }
+        }
+
+        function saveLists() {
+            localStorage.setItem('travelChecklistLists', JSON.stringify(lists));
+        }
+
+        function renderListTabs() {
+            const container = document.getElementById('listSelector');
+            container.innerHTML = '';
+            Object.keys(lists).forEach(id => {
+                const btn = document.createElement('button');
+                btn.className = 'list-tab' + (id === currentListId ? ' active' : '');
+                btn.textContent = lists[id].name;
+                btn.onclick = () => switchList(id);
+                container.appendChild(btn);
+            });
+            const addBtn = document.createElement('button');
+            addBtn.className = 'add-list-btn';
+            addBtn.textContent = '+';
+            addBtn.onclick = showNewListModal;
+            container.appendChild(addBtn);
+        }
+
+        function switchList(id) {
+            currentListId = id;
+            renderListTabs();
+            loadCurrentList();
+        }
+
+        function loadCurrentList() {
+            const list = lists[currentListId];
+            document.getElementById('pageTitle').textContent = list.name || 'Travel Checklist';
+            
+            if (list.trip) {
+                document.getElementById('tripDates').textContent = `Trip: ${list.trip.country || 'Not set'}`;
+                document.getElementById('tripDetails').textContent = list.trip.start && list.trip.end 
+                    ? `${list.trip.start} to ${list.trip.end}${list.trip.notes ? ' | ' + list.trip.notes : ''}`
+                    : list.trip.notes || 'Click to set trip details';
+            } else {
+                document.getElementById('tripDates').textContent = 'Trip: Not set';
+                document.getElementById('tripDetails').textContent = 'Click to set trip details';
+            }
+
+            renderChecklist();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = '';
+            const list = lists[currentListId];
+
+            list.sections.forEach((section, sIdx) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                sectionDiv.innerHTML = `
+                    <div class="section-header">
+                        <h2>${section.name}</h2>
+                        <button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>
+                    </div>
+                `;
+                section.items.forEach((item, iIdx) => {
+                    const checked = item.checked ? 'checked' : '';
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item' + (item.checked ? ' checked' : '');
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" ${checked} onchange="toggleItem(${sIdx}, ${iIdx})">
+                        <span class="item-name">${item.name}</span>
+                        <input type="text" class="item-qty" value="${item.qty}" onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
+                        <button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">✕</button>
+                    `;
+                    sectionDiv.appendChild(itemDiv);
                 });
+
+                const addItemRow = document.createElement('div');
+                addItemRow.className = 'add-item-row';
+                addItemRow.innerHTML = `
+                    <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
+                    <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
+                    <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
+                `;
+                sectionDiv.appendChild(addItemRow);
+                container.appendChild(sectionDiv);
+            });
+
+            updateStats();
+        }
+
+        function toggleItem(sIdx, iIdx) {
+            lists[currentListId].sections[sIdx].items[iIdx].checked = !lists[currentListId].sections[sIdx].items[iIdx].checked;
+            saveLists();
+            renderChecklist();
+        }
+
+        function updateQty(sIdx, iIdx, val) {
+            lists[currentListId].sections[sIdx].items[iIdx].qty = val;
+            saveLists();
+        }
+
+        function addItemToSection(sIdx) {
+            const nameInput = document.getElementById(`newItemName_${sIdx}`);
+            const qtyInput = document.getElementById(`newItemQty_${sIdx}`);
+            const name = nameInput.value.trim();
+            const qty = qtyInput.value.trim() || '1';
+            if (!name) return;
+
+            lists[currentListId].sections[sIdx].items.push({ name, qty, checked: false });
+            saveLists();
+            renderChecklist();
+        }
+
+        function deleteItem(sIdx, iIdx) {
+            lists[currentListId].sections[sIdx].items.splice(iIdx, 1);
+            saveLists();
+            renderChecklist();
+        }
+
+        function addNewSection() {
+            const name = document.getElementById('newSectionName').value.trim();
+            if (!name) return;
+            
+            lists[currentListId].sections.push({ name, items: [] });
+            document.getElementById('newSectionName').value = '';
+            saveLists();
+            renderChecklist();
+        }
+
+        function deleteSection(sIdx) {
+            if (confirm('Delete this section and all items?')) {
+                lists[currentListId].sections.splice(sIdx, 1);
+                saveLists();
+                renderChecklist();
             }
         }
 
         function updateStats() {
-            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            packedSpan.textContent = checked;
-            const total = document.querySelectorAll('input[type="checkbox"]').length;
-            totalSpan.textContent = total;
-            const percent = (checked / total) * 100;
-            progressBar.style.width = percent + '%';
+            let total = 0, checked = 0;
+            lists[currentListId].sections.forEach(s => {
+                s.items.forEach(i => {
+                    total++;
+                    if (i.checked) checked++;
+                });
+            });
+            document.getElementById('packed').textContent = checked;
+            document.getElementById('total').textContent = total;
+            const percent = total > 0 ? (checked / total) * 100 : 0;
+            document.getElementById('progress').style.width = percent + '%';
         }
 
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', function() {
-                this.closest('.item').classList.toggle('checked', this.checked);
-                saveState();
-                updateStats();
-            });
-            const item = cb.closest('.item');
-            item.addEventListener('click', function(e) {
-                if (e.target !== cb) {
-                    cb.checked = !cb.checked;
-                    cb.dispatchEvent(new Event('change'));
-                }
-            });
-        });
+        function showTripModal() {
+            const list = lists[currentListId];
+            if (list.trip) {
+                document.getElementById('tripCountry').value = list.trip.country || '';
+                document.getElementById('tripStart').value = list.trip.start || '';
+                document.getElementById('tripEnd').value = list.trip.end || '';
+                document.getElementById('tripNotes').value = list.trip.notes || '';
+            } else {
+                document.getElementById('tripCountry').value = '';
+                document.getElementById('tripStart').value = '';
+                document.getElementById('tripEnd').value = '';
+                document.getElementById('tripNotes').value = '';
+            }
+            document.getElementById('tripModal').classList.add('active');
+        }
 
-        loadState();
-        updateStats();
+        function saveTripInfo() {
+            lists[currentListId].trip = {
+                country: document.getElementById('tripCountry').value,
+                start: document.getElementById('tripStart').value,
+                end: document.getElementById('tripEnd').value,
+                notes: document.getElementById('tripNotes').value
+            };
+            saveLists();
+            closeModal('tripModal');
+            loadCurrentList();
+        }
 
-        function addCustomItem() {
-            const name = document.getElementById('customItemName').value.trim();
-            const qty = document.getElementById('customItemQty').value.trim();
+        function showSettingsModal() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function showNewListModal() {
+            document.getElementById('newListModal').classList.add('active');
+            closeModal('settingsModal');
+        }
+
+        function createNewList() {
+            const name = document.getElementById('newListName').value.trim();
+            const template = document.getElementById('templateSelect').value;
             if (!name) return;
+
+            const newId = 'list_' + Date.now();
+            const templateData = templates[template];
+            lists[newId] = JSON.parse(JSON.stringify(templateData));
+            lists[newId].name = name;
             
-            const container = document.getElementById('customItems');
-            const id = 'custom_' + Date.now();
-            const div = document.createElement('div');
-            div.className = 'item';
-            div.innerHTML = `<input type="checkbox" id="${id}"><span class="item-name">${name}</span><span class="item-qty">${qty || '1'}</span>`;
-            container.appendChild(div);
-            
-            const cb = div.querySelector('input');
-            cb.addEventListener('change', function() {
-                this.closest('.item').classList.toggle('checked', this.checked);
-                saveCustomState();
-                updateStats();
-            });
-            div.addEventListener('click', function(e) {
-                if (e.target !== cb) {
-                    cb.checked = !cb.checked;
-                    cb.dispatchEvent(new Event('change'));
-                }
-            });
-            
-            document.getElementById('customItemName').value = '';
-            document.getElementById('customItemQty').value = '';
-            saveCustomItems();
-            updateStats();
+            currentListId = newId;
+            saveLists();
+            closeModal('newListModal');
+            renderListTabs();
+            loadCurrentList();
         }
 
-        function saveCustomItems() {
-            const items = [];
-            document.querySelectorAll('#customItems .item').forEach(item => {
-                items.push({
-                    name: item.querySelector('.item-name').textContent,
-                    qty: item.querySelector('.item-qty').textContent,
-                    checked: item.querySelector('input').checked
-                });
-            });
-            localStorage.setItem('chinaChecklistCustom', JSON.stringify(items));
+        function deleteCurrentList() {
+            if (Object.keys(lists).length <= 1) {
+                alert('Cannot delete the only list');
+                return;
+            }
+            if (confirm(`Delete "${lists[currentListId].name}"?`)) {
+                delete lists[currentListId];
+                currentListId = Object.keys(lists)[0];
+                saveLists();
+                renderListTabs();
+                loadCurrentList();
+            }
         }
 
-        function loadCustomItems() {
-            const saved = localStorage.getItem('chinaChecklistCustom');
-            if (!saved) return;
-            const items = JSON.parse(saved);
-            const container = document.getElementById('customItems');
-            items.forEach(item => {
-                const id = 'custom_' + Math.random().toString(36).substr(2, 9);
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `<input type="checkbox" id="${id}"><span class="item-name">${item.name}</span><span class="item-qty">${item.qty}</span>`;
-                container.appendChild(div);
-                
-                const cb = div.querySelector('input');
-                if (item.checked) {
-                    cb.checked = true;
-                    div.classList.add('checked');
-                }
-                cb.addEventListener('change', function() {
-                    this.closest('.item').classList.toggle('checked', this.checked);
-                    saveCustomState();
-                    updateStats();
-                });
-                div.addEventListener('click', function(e) {
-                    if (e.target !== cb) {
-                        cb.checked = !cb.checked;
-                        cb.dispatchEvent(new Event('change'));
-                    }
-                });
-            });
+        function resetToDefaults() {
+            if (confirm('Reset all lists to defaults? This will delete all custom lists.')) {
+                lists = {
+                    default: JSON.parse(JSON.stringify(templates.china))
+                };
+                currentListId = 'default';
+                saveLists();
+                renderListTabs();
+                loadCurrentList();
+            }
         }
 
-        function saveCustomState() {
-            saveCustomItems();
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
-        loadCustomItems();
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        }
+
+        init();
     </script>
 </body>
 </html>
