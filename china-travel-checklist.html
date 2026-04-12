@@ -356,11 +356,11 @@
                         { name: 'Hotel reservations', qty: 'as needed' },
                         { name: 'Cash (local currency)', qty: 'as needed' },
                         { name: 'Credit cards', qty: '1-2' }
-                    ]},
+                    ], isDefault: true },
                     { name: '🧥 Outerwear (if needed)', items: [
                         { name: 'Jacket/Hoodie', qty: 1 },
                         { name: 'Rain jacket', qty: 1 }
-                    ]},
+                    ], isDefault: true },
                     { name: '👕 Clothing', items: [
                         { name: 'T-shirts', qty: '5-7' },
                         { name: 'Pants/Shorts', qty: '3-5' },
@@ -368,7 +368,7 @@
                         { name: 'Socks', qty: '7 pairs' },
                         { name: 'Sleepwear', qty: '2 sets' },
                         { name: 'Comfortable shoes', qty: 1 }
-                    ]},
+                    ], isDefault: true },
                     { name: '📱 Electronics', items: [
                         { name: 'Phone', qty: 1 },
                         { name: 'Charger', qty: 1 },
@@ -376,7 +376,7 @@
                         { name: 'Portable power bank', qty: 1 },
                         { name: 'Camera', qty: 1 },
                         { name: 'Earphones', qty: 1 }
-                    ]},
+                    ], isDefault: true },
                     { name: '🧴 Toiletries & Medicine', items: [
                         { name: 'Toothbrush', qty: 1 },
                         { name: 'Toothpaste', qty: '1 tube' },
@@ -387,13 +387,13 @@
                         { name: 'Personal medications', qty: 'as needed' },
                         { name: 'Lip balm', qty: 1 },
                         { name: 'Hand cream', qty: 1 }
-                    ]},
+                    ], isDefault: true },
                     { name: '🎒 Other Essentials', items: [
                         { name: 'Day backpack', qty: 1 },
                         { name: 'Umbrella', qty: 1 },
                         { name: 'Sunglasses', qty: 1 },
                         { name: 'Travel pillow', qty: 1 }
-                    ]}
+                    ], isDefault: true }
                 ]
             },
             beach: {
@@ -586,10 +586,11 @@
             list.sections.forEach((section, sIdx) => {
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section';
+                const canDelete = editable && !section.isDefault;
                 sectionDiv.innerHTML = `
                     <div class="section-header">
                         <h2>${section.name}</h2>
-                        ${editable ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
+                        ${canDelete ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
                     </div>
                 `;
                 section.items.forEach((item, iIdx) => {
@@ -605,16 +606,14 @@
                     sectionDiv.appendChild(itemDiv);
                 });
 
-                if (editable) {
-                    const addItemRow = document.createElement('div');
-                    addItemRow.className = 'add-item-row';
-                    addItemRow.innerHTML = `
-                        <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
-                        <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
-                        <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
-                    `;
-                    sectionDiv.appendChild(addItemRow);
-                }
+                const addItemRow = document.createElement('div');
+                addItemRow.className = 'add-item-row';
+                addItemRow.innerHTML = `
+                    <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
+                    <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
+                    <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
+                `;
+                sectionDiv.appendChild(addItemRow);
                 container.appendChild(sectionDiv);
             });
 
@@ -654,7 +653,7 @@
             const name = document.getElementById('newSectionName').value.trim();
             if (!name) return;
             
-            lists[currentListId].sections.push({ name, items: [] });
+            lists[currentListId].sections.push({ name, items: [], isDefault: false });
             document.getElementById('newSectionName').value = '';
             saveLists();
             renderChecklist();
