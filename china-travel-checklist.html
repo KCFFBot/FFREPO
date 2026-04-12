@@ -225,6 +225,16 @@
         <div class="item"><input type="checkbox" id="gift1"><span class="item-name">Gifts for friends/family</span><span class="item-qty">as needed</span></div>
     </div>
 
+    <div class="section">
+        <h2>➕ Custom Items</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="customItemName" placeholder="Item name" style="flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <input type="text" id="customItemQty" placeholder="Qty" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <button onclick="addCustomItem()" style="padding: 8px 16px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">Add</button>
+        </div>
+        <div id="customItems"></div>
+    </div>
+
     <script>
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         const packedSpan = document.getElementById('packed');
@@ -254,7 +264,9 @@
         function updateStats() {
             const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
             packedSpan.textContent = checked;
-            const percent = (checked / checkboxes.length) * 100;
+            const total = document.querySelectorAll('input[type="checkbox"]').length;
+            totalSpan.textContent = total;
+            const percent = (checked / total) * 100;
             progressBar.style.width = percent + '%';
         }
 
@@ -275,6 +287,86 @@
 
         loadState();
         updateStats();
+
+        function addCustomItem() {
+            const name = document.getElementById('customItemName').value.trim();
+            const qty = document.getElementById('customItemQty').value.trim();
+            if (!name) return;
+            
+            const container = document.getElementById('customItems');
+            const id = 'custom_' + Date.now();
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML = `<input type="checkbox" id="${id}"><span class="item-name">${name}</span><span class="item-qty">${qty || '1'}</span>`;
+            container.appendChild(div);
+            
+            const cb = div.querySelector('input');
+            cb.addEventListener('change', function() {
+                this.closest('.item').classList.toggle('checked', this.checked);
+                saveCustomState();
+                updateStats();
+            });
+            div.addEventListener('click', function(e) {
+                if (e.target !== cb) {
+                    cb.checked = !cb.checked;
+                    cb.dispatchEvent(new Event('change'));
+                }
+            });
+            
+            document.getElementById('customItemName').value = '';
+            document.getElementById('customItemQty').value = '';
+            saveCustomItems();
+            updateStats();
+        }
+
+        function saveCustomItems() {
+            const items = [];
+            document.querySelectorAll('#customItems .item').forEach(item => {
+                items.push({
+                    name: item.querySelector('.item-name').textContent,
+                    qty: item.querySelector('.item-qty').textContent,
+                    checked: item.querySelector('input').checked
+                });
+            });
+            localStorage.setItem('chinaChecklistCustom', JSON.stringify(items));
+        }
+
+        function loadCustomItems() {
+            const saved = localStorage.getItem('chinaChecklistCustom');
+            if (!saved) return;
+            const items = JSON.parse(saved);
+            const container = document.getElementById('customItems');
+            items.forEach(item => {
+                const id = 'custom_' + Math.random().toString(36).substr(2, 9);
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `<input type="checkbox" id="${id}"><span class="item-name">${item.name}</span><span class="item-qty">${item.qty}</span>`;
+                container.appendChild(div);
+                
+                const cb = div.querySelector('input');
+                if (item.checked) {
+                    cb.checked = true;
+                    div.classList.add('checked');
+                }
+                cb.addEventListener('change', function() {
+                    this.closest('.item').classList.toggle('checked', this.checked);
+                    saveCustomState();
+                    updateStats();
+                });
+                div.addEventListener('click', function(e) {
+                    if (e.target !== cb) {
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+        }
+
+        function saveCustomState() {
+            saveCustomItems();
+        }
+
+        loadCustomItems();
     </script>
 </body>
 </html>
