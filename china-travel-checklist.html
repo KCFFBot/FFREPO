@@ -38,6 +38,22 @@
             background: #fafafa;
             z-index: 100;
             padding: 10px 0;
+            gap: 10px;
+        }
+        .undo-btn {
+            padding: 8px 14px;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            -webkit-appearance: none;
+            white-space: nowrap;
+        }
+        .undo-btn:active {
+            background: #0056b3;
+        }
         }
         .menu-btn {
             padding: 10px 16px;
@@ -422,6 +438,7 @@
 </head>
 <body>
     <div class="header">
+        <button class="undo-btn" onclick="undo()">↩️ Undo</button>
         <h1 id="pageTitle">Travel Checklist</h1>
         <button class="menu-btn" onclick="showSettingsModal()">⚙️ Settings</button>
     </div>
@@ -660,9 +677,30 @@
 
         let lists = {};
         let currentListId = 'default';
+        let history = [];
+        const MAX_HISTORY = 20;
 
         function init() {
             loadLists();
+            renderListTabs();
+            loadCurrentList();
+        }
+
+        function saveToHistory() {
+            history.push(JSON.stringify(lists));
+            if (history.length > MAX_HISTORY) {
+                history.shift();
+            }
+        }
+
+        function undo() {
+            if (history.length === 0) {
+                alert('Nothing to undo');
+                return;
+            }
+            const previousState = history.pop();
+            lists = JSON.parse(previousState);
+            saveLists();
             renderListTabs();
             loadCurrentList();
         }
@@ -682,6 +720,7 @@
                 lists.default.isCustom = false;
                 saveLists();
             }
+            history = [];
         }
 
         function isListEditable() {
@@ -777,12 +816,14 @@
         }
 
         function toggleItem(sIdx, iIdx) {
+            saveToHistory();
             lists[currentListId].sections[sIdx].items[iIdx].checked = !lists[currentListId].sections[sIdx].items[iIdx].checked;
             saveLists();
             renderChecklist();
         }
 
         function updateQty(sIdx, iIdx, val) {
+            saveToHistory();
             lists[currentListId].sections[sIdx].items[iIdx].qty = val;
             saveLists();
         }
@@ -794,12 +835,14 @@
             const qty = qtyInput.value.trim() || '1';
             if (!name) return;
 
+            saveToHistory();
             lists[currentListId].sections[sIdx].items.push({ name, qty, checked: false });
             saveLists();
             renderChecklist();
         }
 
         function deleteItem(sIdx, iIdx) {
+            saveToHistory();
             lists[currentListId].sections[sIdx].items.splice(iIdx, 1);
             saveLists();
             renderChecklist();
@@ -809,6 +852,7 @@
             const name = document.getElementById('newSectionName').value.trim();
             if (!name) return;
             
+            saveToHistory();
             lists[currentListId].sections.push({ name, items: [], isDefault: false });
             document.getElementById('newSectionName').value = '';
             saveLists();
@@ -817,6 +861,7 @@
 
         function deleteSection(sIdx) {
             if (confirm('Delete this section and all items?')) {
+                saveToHistory();
                 lists[currentListId].sections.splice(sIdx, 1);
                 saveLists();
                 renderChecklist();
@@ -854,6 +899,7 @@
         }
 
         function saveTripInfo() {
+            saveToHistory();
             lists[currentListId].trip = {
                 country: document.getElementById('tripCountry').value,
                 start: document.getElementById('tripStart').value,
@@ -886,6 +932,7 @@
             lists[newId].isCustom = true;
             
             currentListId = newId;
+            saveToHistory();
             saveLists();
             closeModal('newListModal');
             renderListTabs();
@@ -898,6 +945,7 @@
                 return;
             }
             if (confirm(`Delete "${lists[currentListId].name}"?`)) {
+                saveToHistory();
                 delete lists[currentListId];
                 currentListId = Object.keys(lists)[0];
                 saveLists();
@@ -908,6 +956,7 @@
 
         function resetToDefaults() {
             if (confirm('Reset all lists to defaults? This will delete all custom lists.')) {
+                saveToHistory();
                 lists = {
                     default: JSON.parse(JSON.stringify(templates.general))
                 };
