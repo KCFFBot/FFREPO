@@ -4,268 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Travel Checklist</title>
-    <style>
+<style>
+        :root {
+            --primary: #1a1a2e;
+            --accent: #4a90d9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --surface: #ffffff;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+        }
         * {
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             padding-bottom: 100px;
-            background: #fafafa;
+            background: var(--bg);
+            color: var(--text);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
         }
-        h1 {
-            text-align: center;
-            color: #000;
-            font-weight: 600;
-            margin: 10px 0;
-            font-size: 24px;
-        }
+        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
         .header {
-            display: -webkit-flex;
             display: flex;
-            -webkit-justify-content: space-between;
             justify-content: space-between;
-            -webkit-align-items: center;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             position: sticky;
             top: 0;
-            background: #fafafa;
+            background: var(--bg);
             z-index: 100;
-            padding: 10px 0;
-            gap: 10px;
+            padding: 16px 0;
+            gap: 12px;
         }
-        .undo-btn {
-            padding: 8px 14px;
-            background: #007aff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            -webkit-appearance: none;
-            white-space: nowrap;
-        }
-        .undo-btn:active {
-            background: #0056b3;
-        }
-        }
-        .menu-btn {
+        .btn {
             padding: 10px 16px;
-            background: #333;
-            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
             -webkit-appearance: none;
-            -webkit-touch-callout: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .trip-info {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 12px;
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background: #2d2d4a; }
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-accent:hover { background: #3a7fc8; }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { background: var(--border); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn:active { transform: scale(0.97); }
+        
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+            flex: 1;
             text-align: center;
-            margin-bottom: 15px;
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+        
+        .trip-info {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d2d4a 100%);
+            color: white;
+            padding: 24px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
             cursor: pointer;
-            -webkit-tap-highlight-color: #f0f0f0;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .trip-info:hover, .trip-info:active {
-            background: #f5f5f5;
+        .trip-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26, 26, 46, 0.2);
         }
-        .stats {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 70px;
-            float: right;
-            background: #fff;
-            border: 1px solid #ddd;
-            color: #555;
-            padding: 12px 15px;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            z-index: 50;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        .trip-info h3 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+        .trip-info p { margin: 0; opacity: 0.85; font-size: 14px; }
+        
+        .stats-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+        .stat-card.highlight { border-color: var(--success); }
+        .stat-card.highlight .stat-value { color: var(--success); }
+        
+        .progress-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .progress-text {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .progress-percent {
+            font-weight: 700;
+            color: var(--accent);
         }
         .progress-bar {
-            width: 80px;
-            height: 6px;
-            background: #eee;
-            border-radius: 3px;
-            margin-top: 8px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
             overflow: hidden;
         }
         .progress-fill {
             height: 100%;
-            background: #666;
-            border-radius: 3px;
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         .section {
-            background: #fff;
+            background: var(--surface);
             margin-bottom: 12px;
-            padding: 16px;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
         .section-header {
-            display: -webkit-flex;
             display: flex;
-            -webkit-justify-content: space-between;
             justify-content: space-between;
-            -webkit-align-items: center;
             align-items: center;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            padding: 16px 20px;
+            background: linear-gradient(to right, var(--bg), var(--surface));
+            border-bottom: 1px solid var(--border);
         }
-        .section h2 {
+        .section-header h2 {
             margin: 0;
-            color: #000;
-            font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .delete-section-btn {
-            background: #ff4444;
+        .section-count {
+            background: var(--accent);
             color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            -webkit-appearance: none;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
         }
         .item {
-            display: -webkit-flex;
             display: flex;
-            -webkit-align-items: center;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f5f5f5;
-            cursor: pointer;
-            min-height: 44px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
         }
-        .item:last-child {
-            border-bottom: none;
-        }
-        .item input[type="checkbox"] {
+        .item:last-child { border-bottom: none; }
+        .item:hover { background: var(--bg); }
+        .item.checked { opacity: 0.6; }
+        .item.checked .item-name { text-decoration: line-through; }
+        
+        .checkbox {
             width: 22px;
             height: 22px;
-            margin-right: 12px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            margin-right: 14px;
             cursor: pointer;
-            accent-color: #666;
-            -webkit-appearance: none;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
             flex-shrink: 0;
         }
-        .item input[type="checkbox"]:checked {
-            background: #666;
-            border-color: #666;
+        .checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
         }
-        .item.checked {
-            opacity: 0.5;
-        }
-        .item.checked span {
-            text-decoration: line-through;
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
         }
         .item-name {
             flex: 1;
-            color: #333;
             font-size: 15px;
-            word-break: break-word;
+            color: var(--text);
         }
         .item-qty {
-            color: #000;
-            font-size: 14px;
+            color: var(--text-muted);
+            font-size: 13px;
             font-weight: 500;
-            min-width: 60px;
-            max-width: 100px;
-            text-align: right;
-            margin: 0 8px;
-            padding: 6px 8px;
+            padding: 6px 10px;
             border: 1px solid transparent;
             border-radius: 6px;
-            background: #f8f8f8;
-            font-family: inherit;
-            -webkit-appearance: none;
+            background: var(--bg);
+            margin: 0 12px;
+            text-align: center;
+            min-width: 70px;
         }
         .item-qty:focus {
-            border-color: #666;
-            background: #fff;
+            border-color: var(--accent);
+            background: var(--surface);
             outline: none;
         }
         .item-qty[readonly] {
             background: transparent;
-            border: 1px solid transparent;
+            border-color: transparent;
         }
         .delete-item-btn {
-            background: #ff4444;
-            color: white;
+            background: transparent;
+            color: var(--danger);
             border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
+            padding: 8px;
             cursor: pointer;
-            font-size: 12px;
-            -webkit-appearance: none;
             opacity: 0;
-            -webkit-transition: opacity 0.2s;
             transition: opacity 0.2s;
-            flex-shrink: 0;
+            font-size: 18px;
         }
-        .item:hover .delete-item-btn,
-        .item:active .delete-item-btn {
-            opacity: 1;
-        }
+        .item:hover .delete-item-btn { opacity: 1; }
+        
         .add-item-row {
-            display: -webkit-flex;
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            -webkit-flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg);
             flex-wrap: wrap;
         }
         .add-item-row input {
-            padding: 8px 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--surface);
             -webkit-appearance: none;
-            min-height: 36px;
         }
-        .add-item-row input[type="text"] {
-            -webkit-flex: 2;
-            flex: 2;
-            min-width: 80px;
+        .add-item-row input:focus {
+            border-color: var(--accent);
+            outline: none;
         }
-        .add-item-row input[type="number"] {
-            -webkit-flex: 1;
-            flex: 1;
-            max-width: 60px;
-        }
+        .add-item-row input[type="text"] { flex: 2; min-width: 120px; }
+        .add-item-row input[type="number"] { flex: 1; max-width: 80px; }
         .add-btn {
-            padding: 8px 16px;
-            background: #666;
+            padding: 10px 20px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 500;
             -webkit-appearance: none;
-            min-height: 44px;
+            transition: background 0.2s;
         }
-        .add-btn:active {
-            background: #555;
+        .add-btn:hover { background: #2d2d4a; }
+        
+        .list-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
         }
+        .list-selector::-webkit-scrollbar { height: 4px; }
+        .list-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .list-tab {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .list-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .add-list-btn {
+            padding: 10px 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -275,213 +358,126 @@
             height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 1000;
-            -webkit-overflow-scrolling: touch;
-        }
-        .modal.active {
-            display: -webkit-flex;
-            display: flex;
-            -webkit-align-items: center;
             align-items: center;
-            -webkit-justify-content: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
+        .modal.active { display: flex; }
         .modal-content {
-            background: white;
-            padding: 24px;
+            background: var(--surface);
+            padding: 28px;
             border-radius: 16px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             max-height: 90vh;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
         .modal h2 {
-            margin: 0 0 16px 0;
+            margin: 0 0 20px 0;
             font-size: 20px;
+            color: var(--primary);
+        }
+        .modal label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
         }
         .modal input, .modal select {
             width: 100%;
-            padding: 14px;
-            margin: 8px 0 16px 0;
-            border: 1px solid #ddd;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 16px;
+            font-size: 15px;
             -webkit-appearance: none;
-            min-height: 44px;
+        }
+        .modal input:focus {
+            border-color: var(--accent);
+            outline: none;
         }
         .modal-buttons {
-            display: -webkit-flex;
             display: flex;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 24px;
         }
-        .modal-buttons button {
-            -webkit-flex: 1;
-            flex: 1;
-            padding: 14px;
-            border: none;
+        .modal-buttons .btn { flex: 1; justify-content: center; }
+        
+        .add-section-card {
+            background: var(--surface);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+        .add-section-card h3 {
+            color: var(--text-muted);
+            margin: 0 0 12px;
+            font-size: 14px;
+        }
+        .add-section-card input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            -webkit-appearance: none;
-            min-height: 44px;
-        }
-        .save-btn {
-            background: #34c759;
-            color: white;
-        }
-        .save-btn:active {
-            background: #2db84d;
-        }
-        .cancel-btn {
-            background: #e5e5ea;
-            color: #333;
-        }
-        .cancel-btn:active {
-            background: #d1d1d6;
-        }
-        .list-selector {
-            display: -webkit-flex;
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            -webkit-flex-wrap: wrap;
-            flex-wrap: wrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 5px;
-        }
-        .list-tab {
-            padding: 10px 18px;
-            background: #e5e5ea;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
+            margin-bottom: 12px;
             font-size: 14px;
-            white-space: nowrap;
-            -webkit-appearance: none;
-            -webkit-touch-callout: none;
         }
-        .list-tab.active {
-            background: #000;
-            color: white;
-        }
-        .list-tab:active {
-            opacity: 0.7;
-        }
-        .add-list-btn {
-            padding: 10px 18px;
-            background: #34c759;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            white-space: nowrap;
-            -webkit-appearance: none;
-        }
-        .add-list-btn:active {
-            background: #2db84d;
+        .add-section-card input:focus {
+            border-color: var(--accent);
+            outline: none;
         }
 
         @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
-            .header {
-                flex-direction: row;
-                gap: 10px;
-            }
-            .stats {
-                position: relative;
-                float: none;
-                top: 0;
-                margin-bottom: 12px;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-justify-content: space-between;
-                justify-content: space-between;
-                -webkit-align-items: center;
-                align-items: center;
-            }
-            .progress-bar {
-                width: 120px;
-            }
-            .item {
-                padding: 12px 0;
-            }
-            .item-qty {
-                min-width: 50px;
-                max-width: 80px;
-                font-size: 13px;
-            }
-            .add-item-row input[type="text"] {
-                -webkit-flex: 1 1 100%;
-                flex: 1 1 100%;
-            }
-            .add-item-row input[type="number"] {
-                -webkit-flex: 1 1 45%;
-                flex: 1 1 45%;
-            }
-            .add-btn {
-                -webkit-flex: 1 1 100%;
-                flex: 1 1 100%;
-                margin-top: 8px;
-            }
-            .modal-content {
-                padding: 20px;
-                border-radius: 12px;
-            }
+            body { padding: 12px; }
+            .stats-panel { grid-template-columns: 1fr 1fr; }
+            .stat-card:last-child { grid-column: span 2; }
+            .item { padding: 12px 16px; }
+            .add-item-row { padding: 12px 16px; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <button class="undo-btn" onclick="undo()">↩️ Undo</button>
-        <h1 id="pageTitle">Travel Checklist</h1>
-        <button class="menu-btn" onclick="showSettingsModal()">⚙️ Settings</button>
-    </div>
-
-    <div class="stats">
-        <div>Packed: <span id="packed">0</span> / <span id="total">0</span></div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress" style="width: 0%"></div>
-        </div>
+        <button class="btn btn-ghost" onclick="undo()">↩ Undo</button>
+        <h1 class="page-title" id="pageTitle">Travel Checklist</h1>
+        <button class="btn btn-primary" onclick="showSettingsModal()">⚙ Settings</button>
     </div>
 
     <div class="list-selector" id="listSelector"></div>
 
     <div class="trip-info" id="tripInfo" onclick="showTripModal()">
-        <strong id="tripDates">Trip: Not set</strong><br>
-        <span id="tripDetails">Click to set trip details</span>
+        <h3 id="tripDates">✈️ Trip: Not Set</h3>
+        <p id="tripDetails">Tap to set trip details</p>
     </div>
+
+    <div class="stats-panel" id="statsPanel"></div>
+    <div class="progress-container" id="progressContainer"></div>
 
     <div id="checklistContainer"></div>
 
-    <div class="section" id="addSectionDiv">
-        <h2>➕ Add Section</h2>
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <input type="text" id="newSectionName" placeholder="Section name (e.g., 🧴 Toiletries)" style="flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <button class="add-btn" onclick="addNewSection()">Add</button>
-        </div>
+    <div class="add-section-card" id="addSectionDiv">
+        <h3>➕ Add New Section</h3>
+        <input type="text" id="newSectionName" placeholder="Section name (e.g., 🎒 Daypack Items)">
+        <button class="btn btn-accent" onclick="addNewSection()" style="width:100%">Add Section</button>
     </div>
 
     <!-- Trip Info Modal -->
     <div class="modal" id="tripModal">
         <div class="modal-content">
-            <h2>✏️ Edit Trip</h2>
-            <label>Country/Destination</label>
-            <input type="text" id="tripCountry" placeholder="e.g., China, Japan">
+            <h2>✏️ Trip Details</h2>
+            <label>Destination</label>
+            <input type="text" id="tripCountry" placeholder="e.g., Japan, France, Bali">
             <label>Start Date</label>
             <input type="date" id="tripStart">
             <label>End Date</label>
             <input type="date" id="tripEnd">
-            <label>Notes (e.g., 2 days mountain, 5 days city)</label>
-            <input type="text" id="tripNotes" placeholder="e.g., 2 days mountain (5-10°C) | 5 days in town">
+            <label>Notes</label>
+            <input type="text" id="tripNotes" placeholder="e.g., 3 days hiking, 5 days city">
             <div class="modal-buttons">
-                <button class="save-btn" onclick="saveTripInfo()">Save</button>
-                <button class="cancel-btn" onclick="closeModal('tripModal')">Cancel</button>
+                <button class="btn btn-accent" onclick="saveTripInfo()">Save</button>
+                <button class="btn btn-ghost" onclick="closeModal('tripModal')">Cancel</button>
             </div>
         </div>
     </div>
@@ -490,29 +486,44 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>⚙️ Settings</h2>
-            <button class="save-btn" style="width: 100%; margin-bottom: 10px;" onclick="showNewListModal()">📋 Create New List</button>
-            <button class="save-btn" style="width: 100%; background: #666;" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
-            <button class="cancel-btn" style="width: 100%; margin-top: 10px;" onclick="closeModal('settingsModal')">Close</button>
+            <button class="btn btn-accent" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">📋 Create New List</button>
+            <button class="btn btn-ghost" style="width:100%; margin-bottom:12px" onclick="generateSummary()">📊 Generate Summary</button>
+            <button class="btn btn-danger" style="width:100%" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+            <div class="modal-buttons">
+                <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
+            </div>
         </div>
     </div>
 
     <!-- New List Modal -->
     <div class="modal" id="newListModal">
         <div class="modal-content">
-            <h2>📋 Create New List</h2>
+            <h2>📋 New List</h2>
             <label>List Name</label>
-            <input type="text" id="newListName" placeholder="e.g., China Trip, Japan Adventure">
-            <label>Based on Template</label>
+            <input type="text" id="newListName" placeholder="e.g., Europe Trip 2025">
+            <label>Template</label>
             <select id="templateSelect">
-                <option value="general">General Travel</option>
-                <option value="beach">Beach Vacation</option>
-                <option value="business">Business Trip</option>
-                <option value="camping">Camping</option>
-                <option value="empty">Empty List</option>
+                <option value="general">🌍 General Travel</option>
+                <option value="beach">🏖️ Beach Vacation</option>
+                <option value="business">💼 Business Trip</option>
+                <option value="camping">⛺ Camping</option>
+                <option value="empty">📝 Empty List</option>
             </select>
             <div class="modal-buttons">
-                <button class="save-btn" onclick="createNewList()">Create</button>
-                <button class="cancel-btn" onclick="closeModal('newListModal')">Cancel</button>
+                <button class="btn btn-accent" onclick="createNewList()">Create</button>
+                <button class="btn btn-ghost" onclick="closeModal('newListModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="modal" id="summaryModal">
+        <div class="modal-content">
+            <h2>📊 Trip Summary</h2>
+            <div id="summaryContent"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="copySummary()">📋 Copy</button>
+                <button class="btn btn-ghost" onclick="closeModal('summaryModal')">Close</button>
             </div>
         </div>
     </div>
@@ -679,6 +690,7 @@
         let currentListId = 'default';
         let history = [];
         const MAX_HISTORY = 20;
+        let currentSummary = '';
 
         function init() {
             loadLists();
@@ -759,17 +771,75 @@
             document.getElementById('pageTitle').textContent = list.name || 'Travel Checklist';
             
             if (list.trip) {
-                document.getElementById('tripDates').textContent = `Trip: ${list.trip.country || 'Not set'}`;
-                document.getElementById('tripDetails').textContent = list.trip.start && list.trip.end 
-                    ? `${list.trip.start} to ${list.trip.end}${list.trip.notes ? ' | ' + list.trip.notes : ''}`
-                    : list.trip.notes || 'Click to set trip details';
+                document.getElementById('tripDates').textContent = `✈️ ${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
+                const dateRange = list.trip.start && list.trip.end 
+                    ? `${formatDate(list.trip.start)} → ${formatDate(list.trip.end)}`
+                    : (list.trip.start ? formatDate(list.trip.start) : 'Dates not set');
+                document.getElementById('tripDetails').textContent = dateRange + (list.trip.notes ? ' • ' + list.trip.notes : '');
             } else {
-                document.getElementById('tripDates').textContent = 'Trip: Not set';
-                document.getElementById('tripDetails').textContent = 'Click to set trip details';
+                document.getElementById('tripDates').textContent = '✈️ Trip Not Set';
+                document.getElementById('tripDetails').textContent = 'Tap to configure your trip details';
             }
 
             document.getElementById('addSectionDiv').style.display = isListEditable() ? 'block' : 'none';
+            renderStats();
+            renderProgress();
             renderChecklist();
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function renderStats() {
+            const statsPanel = document.getElementById('statsPanel');
+            const list = lists[currentListId];
+            let total = 0, checked = 0, sections = list.sections.length;
+            list.sections.forEach(s => {
+                s.items.forEach(i => {
+                    total++;
+                    if (i.checked) checked++;
+                });
+            });
+            const remaining = total - checked;
+            statsPanel.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${checked}</div>
+                    <div class="stat-label">Packed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${remaining}</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-card ${remaining === 0 ? 'highlight' : ''}">
+                    <div class="stat-value">${sections}</div>
+                    <div class="stat-label">Sections</div>
+                </div>
+            `;
+        }
+
+        function renderProgress() {
+            const container = document.getElementById('progressContainer');
+            const list = lists[currentListId];
+            let total = 0, checked = 0;
+            list.sections.forEach(s => {
+                s.items.forEach(i => {
+                    total++;
+                    if (i.checked) checked++;
+                });
+            });
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            container.innerHTML = `
+                <div class="progress-header">
+                    <span class="progress-text">Packing Progress</span>
+                    <span class="progress-percent">${percent}% Complete</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percent}%"></div>
+                </div>
+            `;
         }
 
         function renderChecklist() {
@@ -782,21 +852,22 @@
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section';
                 const canDelete = editable && !section.isDefault;
+                const checkedInSection = section.items.filter(i => i.checked).length;
                 sectionDiv.innerHTML = `
                     <div class="section-header">
-                        <h2>${section.name}</h2>
-                        ${canDelete ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
+                        <h2>${section.name} <span class="section-count">${checkedInSection}/${section.items.length}</span></h2>
+                        ${canDelete ? `<button class="btn btn-danger" onclick="deleteSection(${sIdx})" style="padding:6px 12px;font-size:12px">Delete</button>` : ''}
                     </div>
                 `;
                 section.items.forEach((item, iIdx) => {
-                    const checked = item.checked ? 'checked' : '';
+                    const checkedClass = item.checked ? 'checked' : '';
                     const itemDiv = document.createElement('div');
-                    itemDiv.className = 'item' + (item.checked ? ' checked' : '');
+                    itemDiv.className = `item ${checkedClass}`;
                     itemDiv.innerHTML = `
-                        <input type="checkbox" ${checked} onchange="toggleItem(${sIdx}, ${iIdx})">
+                        <div class="checkbox ${checkedClass}" onclick="toggleItem(${sIdx}, ${iIdx})"></div>
                         <span class="item-name">${item.name}</span>
                         <input type="text" class="item-qty" value="${item.qty}" ${!editable ? 'readonly' : ''} onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
-                        ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">✕</button>` : ''}
+                        ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">×</button>` : ''}
                     `;
                     sectionDiv.appendChild(itemDiv);
                 });
@@ -805,20 +876,20 @@
                 addItemRow.className = 'add-item-row';
                 addItemRow.innerHTML = `
                     <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
-                    <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width: 60px;">
+                    <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width:70px">
                     <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
                 `;
                 sectionDiv.appendChild(addItemRow);
                 container.appendChild(sectionDiv);
             });
-
-            updateStats();
         }
 
         function toggleItem(sIdx, iIdx) {
             saveToHistory();
             lists[currentListId].sections[sIdx].items[iIdx].checked = !lists[currentListId].sections[sIdx].items[iIdx].checked;
             saveLists();
+            renderStats();
+            renderProgress();
             renderChecklist();
         }
 
@@ -838,6 +909,8 @@
             saveToHistory();
             lists[currentListId].sections[sIdx].items.push({ name, qty, checked: false });
             saveLists();
+            renderStats();
+            renderProgress();
             renderChecklist();
         }
 
@@ -845,6 +918,8 @@
             saveToHistory();
             lists[currentListId].sections[sIdx].items.splice(iIdx, 1);
             saveLists();
+            renderStats();
+            renderProgress();
             renderChecklist();
         }
 
@@ -856,6 +931,8 @@
             lists[currentListId].sections.push({ name, items: [], isDefault: false });
             document.getElementById('newSectionName').value = '';
             saveLists();
+            renderStats();
+            renderProgress();
             renderChecklist();
         }
 
@@ -864,22 +941,94 @@
                 saveToHistory();
                 lists[currentListId].sections.splice(sIdx, 1);
                 saveLists();
+                renderStats();
+                renderProgress();
                 renderChecklist();
             }
         }
 
-        function updateStats() {
-            let total = 0, checked = 0;
-            lists[currentListId].sections.forEach(s => {
+        // --- Summary Feature (adapted from Summarization Skill) ---
+        
+        function generateSummary() {
+            closeModal('settingsModal');
+            const list = lists[currentListId];
+            let total = 0, checked = 0, bySection = {};
+            
+            list.sections.forEach(s => {
+                bySection[s.name] = { total: s.items.length, packed: 0, items: [] };
                 s.items.forEach(i => {
                     total++;
-                    if (i.checked) checked++;
+                    if (i.checked) {
+                        checked++;
+                        bySection[s.name].packed++;
+                    }
+                    bySection[s.name].items.push({ name: i.name, qty: i.qty, packed: i.checked });
                 });
             });
-            document.getElementById('packed').textContent = checked;
-            document.getElementById('total').textContent = total;
-            const percent = total > 0 ? (checked / total) * 100 : 0;
-            document.getElementById('progress').style.width = percent + '%';
+
+            const trip = list.trip || {};
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            
+            // TLDR
+            const status = percent === 100 ? '✅ Fully Packed!' : percent > 50 ? '🧳 Well Underway' : '📝 Just Started';
+            
+            // Generate summary text
+            let summary = `# ${list.name} — ${trip.country || 'Travel'} Summary\n`;
+            summary += `${'='.repeat(list.name.length + 15)}\n\n`;
+            
+            summary += `**Status:** ${status}\n`;
+            summary += `**Progress:** ${checked}/${total} items packed (${percent}%)\n\n`;
+            
+            if (trip.start || trip.end) {
+                summary += `**Trip:** ${trip.start || 'TBD'} → ${trip.end || 'TBD'}\n`;
+                if (trip.notes) summary += `**Notes:** ${trip.notes}\n`;
+                summary += '\n';
+            }
+            
+            summary += `---\n\n## 📦 Packed Items (${checked})\n`;
+            Object.entries(bySection).forEach(([sec, data]) => {
+                const packed = data.items.filter(i => i.packed);
+                if (packed.length > 0) {
+                    summary += `\n### ${sec}\n`;
+                    packed.forEach(i => {
+                        summary += `- [x] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`;
+                    });
+                }
+            });
+            
+            const unpacked = total - checked;
+            if (unpacked > 0) {
+                summary += `\n---\n\n## ⬜ Still to Pack (${unpacked})\n`;
+                Object.entries(bySection).forEach(([sec, data]) => {
+                    const unp = data.items.filter(i => !i.packed);
+                    if (unp.length > 0) {
+                        summary += `\n### ${sec}\n`;
+                        unp.forEach(i => {
+                            summary += `- [ ] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`;
+                        });
+                    }
+                });
+            }
+            
+            summary += `\n---\n*Generated on ${new Date().toLocaleDateString()}*\n`;
+            
+            currentSummary = summary;
+            document.getElementById('summaryContent').innerHTML = `<pre style="white-space:pre-wrap;font-size:13px;background:#f8fafc;padding:16px;border-radius:8px;max-height:400px;overflow-y:auto">${summary}</pre>`;
+            document.getElementById('summaryModal').classList.add('active');
+        }
+
+        function copySummary() {
+            navigator.clipboard.writeText(currentSummary).then(() => {
+                alert('Summary copied to clipboard!');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = currentSummary;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert('Summary copied!');
+            });
         }
 
         function showTripModal() {
@@ -939,22 +1088,8 @@
             loadCurrentList();
         }
 
-        function deleteCurrentList() {
-            if (Object.keys(lists).length <= 1) {
-                alert('Cannot delete the only list');
-                return;
-            }
-            if (confirm(`Delete "${lists[currentListId].name}"?`)) {
-                saveToHistory();
-                delete lists[currentListId];
-                currentListId = Object.keys(lists)[0];
-                saveLists();
-                renderListTabs();
-                loadCurrentList();
-            }
-        }
-
         function resetToDefaults() {
+            closeModal('settingsModal');
             if (confirm('Reset all lists to defaults? This will delete all custom lists.')) {
                 saveToHistory();
                 lists = {
