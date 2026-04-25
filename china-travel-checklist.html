@@ -351,7 +351,7 @@
         <div class="list-tabs" id="listSelector"></div>
 
         <div class="card trip-info" id="tripInfo" onclick="showTripModal()">
-            <h3 id="tripDates">✈️ Trip Not Set</h3>
+            <h3 id="tripDates">Trip Not Set</h3>
             <p id="tripDetails">Tap to configure your trip</p>
         </div>
 
@@ -389,9 +389,9 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>Settings</h2>
-            <button class="btn btn-primary" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">📋 Create New List</button>
-            <button class="btn btn-secondary" style="width:100%; margin-bottom:12px" onclick="generateSummary()">📊 Generate Summary</button>
-            <button class="btn btn-ghost" style="width:100%" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+            <button class="btn btn-primary" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">Create New List</button>
+            <button class="btn btn-secondary" style="width:100%; margin-bottom:12px" onclick="generateSummary()">Generate Summary</button>
+            <button class="btn btn-ghost" style="width:100%" onclick="resetToDefaults()">Reset to Defaults</button>
             <div class="modal-buttons">
                 <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
             </div>
@@ -406,11 +406,11 @@
             <input type="text" id="newListName" placeholder="e.g., Europe Trip 2025">
             <label>Template</label>
             <select id="templateSelect">
-                <option value="general">🌍 General Travel</option>
-                <option value="beach">🏖️ Beach Vacation</option>
-                <option value="business">💼 Business Trip</option>
-                <option value="camping">⛺ Camping</option>
-                <option value="empty">📝 Empty List</option>
+                <option value="general">General Travel</option>
+                <option value="beach">Beach Vacation</option>
+                <option value="business">Business Trip</option>
+                <option value="camping">Camping</option>
+                <option value="empty">Empty List</option>
             </select>
             <div class="modal-buttons">
                 <button class="btn btn-primary" onclick="createNewList()">Create</button>
@@ -660,11 +660,11 @@
             const list = lists[currentListId];
             
             if (list.trip) {
-                document.getElementById('tripDates').textContent = `✈️ ${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
+                document.getElementById('tripDates').textContent = `${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
                 const dateRange = list.trip.start && list.trip.end ? `${formatDate(list.trip.start)} → ${formatDate(list.trip.end)}` : (list.trip.start ? formatDate(list.trip.start) : 'Dates not set');
                 document.getElementById('tripDetails').textContent = dateRange + (list.trip.notes ? ' • ' + list.trip.notes : '');
             } else {
-                document.getElementById('tripDates').textContent = '✈️ Trip Not Set';
+                document.getElementById('tripDates').textContent = 'Trip Not Set';
                 document.getElementById('tripDetails').textContent = 'Tap to configure your trip';
             }
 
