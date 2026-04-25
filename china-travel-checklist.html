@@ -884,12 +884,37 @@ function showTripModal() {
 
         function saveTripInfo() {
             saveToHistory();
+            const start = document.getElementById('tripStart').value;
+            const end = document.getElementById('tripEnd').value;
             lists[currentListId].trip = {
                 country: document.getElementById('tripCountry').value,
-                start: document.getElementById('tripStart').value,
-                end: document.getElementById('tripEnd').value,
+                start: start,
+                end: end,
                 notes: document.getElementById('tripNotes').value
             };
+            
+            // Calculate trip days and update quantities
+            if (start && end) {
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+                const tripDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                
+                // Update default quantities based on trip days
+                lists[currentListId].sections.forEach(section => {
+                    if (section.isDefault) {
+                        section.items.forEach(item => {
+                            if (item.name === 'T-shirts' || item.name === 'Underwear' || item.name === 'Socks') {
+                                item.qty = tripDays;
+                            } else if (item.name === 'Pants/Shorts') {
+                                item.qty = Math.ceil(tripDays / 2);
+                            } else if (item.name === 'Sleepwear') {
+                                item.qty = Math.ceil(tripDays / 3);
+                            }
+                        });
+                    }
+                });
+            }
+            
             saveLists();
             document.getElementById('tripModal').close();
             loadCurrentList();
@@ -913,6 +938,28 @@ function showTripModal() {
             lists[newId] = JSON.parse(JSON.stringify(templates[template]));
             lists[newId].name = name;
             lists[newId].isCustom = true;
+            
+            // Update quantities based on trip dates if set
+            if (lists[newId].trip && lists[newId].trip.start && lists[newId].trip.end) {
+                const start = new Date(lists[newId].trip.start);
+                const end = new Date(lists[newId].trip.end);
+                const tripDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                
+                lists[newId].sections.forEach(section => {
+                    if (section.isDefault || section.name.includes('Clothing')) {
+                        section.items.forEach(item => {
+                            if (item.name === 'T-shirts' || item.name === 'Underwear' || item.name === 'Socks') {
+                                item.qty = tripDays;
+                            } else if (item.name === 'Pants/Shorts') {
+                                item.qty = Math.ceil(tripDays / 2);
+                            } else if (item.name === 'Sleepwear') {
+                                item.qty = Math.ceil(tripDays / 3);
+                            }
+                        });
+                    }
+                });
+            }
+            
             currentListId = newId;
             saveToHistory();
             saveLists();
