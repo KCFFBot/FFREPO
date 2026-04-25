@@ -4,226 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Travel Checklist</title>
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #1a1a2e;
-            --accent: #4a90d9;
-            --success: #10b981;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #22c55e;
+            --primary-hover: #16a34a;
+            --secondary: #f59e0b;
             --danger: #ef4444;
-            --surface: #ffffff;
-            --bg: #f8fafc;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
-        }
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
         }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 100px;
+            font-family: 'Outfit', sans-serif;
             background: var(--bg);
             color: var(--text);
-            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            padding: 24px;
+            padding-bottom: 100px;
             line-height: 1.5;
         }
-        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            z-index: 100;
-            padding: 16px 0;
-            gap: 12px;
-        }
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .btn-primary:hover { background: #2d2d4a; }
-        .btn-accent {
-            background: var(--accent);
-            color: white;
-        }
-        .btn-accent:hover { background: #3a7fc8; }
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-        .btn-ghost:hover { background: var(--border); }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn:active { transform: scale(0.97); }
+        .container { max-width: 800px; margin: 0 auto; }
         
-        .page-title {
-            font-size: 22px;
+        header { text-align: center; margin-bottom: 24px; }
+        header h1 {
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--primary);
-            margin: 0;
-            flex: 1;
-            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        .header-actions { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
         
         .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background: var(--card-bg);
+            border-radius: 12px;
             padding: 20px;
-            margin-bottom: 16px;
             border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .list-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab {
+            padding: 10px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .tab:hover:not(.active) { background: var(--border); }
+        .tab-add {
+            padding: 10px 18px;
+            border-radius: 20px;
+            border: 1px dashed var(--border);
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 14px;
         }
         
         .trip-info {
-            background: linear-gradient(135deg, var(--primary) 0%, #2d2d4a 100%);
-            color: white;
-            padding: 24px;
-            border-radius: var(--radius);
-            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            border: 1px solid var(--primary);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
-        .trip-info:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(26, 26, 46, 0.2);
-        }
-        .trip-info h3 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
-        .trip-info p { margin: 0; opacity: 0.85; font-size: 14px; }
+        .trip-info:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .trip-info h3 { color: var(--primary); margin-bottom: 4px; }
+        .trip-info p { color: var(--text-muted); font-size: 14px; }
         
-        .stats-panel {
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 16px;
         }
-        .stat-card {
-            background: var(--surface);
-            border-radius: var(--radius);
+        .stat-box {
+            background: var(--card-bg);
+            border-radius: 12px;
             padding: 16px;
             text-align: center;
             border: 1px solid var(--border);
         }
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 4px;
-        }
-        .stat-card.highlight { border-color: var(--success); }
-        .stat-card.highlight .stat-value { color: var(--success); }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
         
-        .progress-container {
-            background: var(--surface);
-            border-radius: var(--radius);
-            padding: 16px 20px;
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .progress-text {
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .progress-percent {
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .progress-bar {
-            height: 8px;
-            background: var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            border-radius: 4px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .progress-container { margin-bottom: 16px; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 4px; transition: width 0.5s ease; }
         
         .section {
-            background: var(--surface);
+            background: var(--card-bg);
+            border-radius: 12px;
             margin-bottom: 12px;
-            border-radius: var(--radius);
-            overflow: hidden;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            overflow: hidden;
         }
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
-            background: linear-gradient(to right, var(--bg), var(--surface));
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.2);
             border-bottom: 1px solid var(--border);
         }
-        .section-header h2 {
-            margin: 0;
-            font-size: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-count {
-            background: var(--accent);
-            color: white;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
+        .section-header h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .section-badge { background: var(--primary); color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+        .delete-section-btn { background: var(--danger); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        
         .item {
             display: flex;
             align-items: center;
-            padding: 14px 20px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border);
             transition: background 0.15s;
         }
         .item:last-child { border-bottom: none; }
-        .item:hover { background: var(--bg); }
-        .item.checked { opacity: 0.6; }
+        .item:hover { background: rgba(0,0,0,0.2); }
+        .item.checked { opacity: 0.5; }
         .item.checked .item-name { text-decoration: line-through; }
         
         .checkbox {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--border);
             border-radius: 6px;
-            margin-right: 14px;
+            margin-right: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -231,59 +167,46 @@
             transition: all 0.2s;
             flex-shrink: 0;
         }
+        .checkbox:hover { border-color: var(--primary); }
         .checkbox.checked {
-            background: var(--success);
-            border-color: var(--success);
+            background: var(--primary);
+            border-color: var(--primary);
         }
-        .checkbox.checked::after {
-            content: '✓';
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .item-name {
-            flex: 1;
-            font-size: 15px;
-            color: var(--text);
-        }
+        .checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 14px; }
+        
+        .item-name { flex: 1; font-size: 15px; }
         .item-qty {
             color: var(--text-muted);
             font-size: 13px;
-            font-weight: 500;
             padding: 6px 10px;
             border: 1px solid transparent;
             border-radius: 6px;
             background: var(--bg);
-            margin: 0 12px;
+            margin: 0 10px;
             text-align: center;
             min-width: 70px;
+            font-family: inherit;
         }
-        .item-qty:focus {
-            border-color: var(--accent);
-            background: var(--surface);
-            outline: none;
-        }
-        .item-qty[readonly] {
-            background: transparent;
-            border-color: transparent;
-        }
+        .item-qty:focus { border-color: var(--primary); outline: none; }
+        .item-qty[readonly] { background: transparent; border-color: transparent; }
+        
         .delete-item-btn {
             background: transparent;
             color: var(--danger);
             border: none;
-            padding: 8px;
+            font-size: 20px;
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.2s;
-            font-size: 18px;
+            padding: 8px;
         }
         .item:hover .delete-item-btn { opacity: 1; }
         
         .add-item-row {
             display: flex;
             gap: 10px;
-            padding: 12px 20px;
-            background: var(--bg);
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.2);
             flex-wrap: wrap;
         }
         .add-item-row input {
@@ -291,15 +214,14 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 14px;
-            background: var(--surface);
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
             -webkit-appearance: none;
         }
-        .add-item-row input:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-        .add-item-row input[type="text"] { flex: 2; min-width: 120px; }
-        .add-item-row input[type="number"] { flex: 1; max-width: 80px; }
+        .add-item-row input:focus { border-color: var(--primary); outline: none; }
+        .add-item-row input[type="text"] { flex: 2; min-width: 100px; }
+        .add-item-row input[type="text]:last-of-type { flex: 1; max-width: 80px; }
         .add-btn {
             padding: 10px 20px;
             background: var(--primary);
@@ -309,45 +231,47 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            -webkit-appearance: none;
+            font-family: inherit;
             transition: background 0.2s;
         }
-        .add-btn:hover { background: #2d2d4a; }
+        .add-btn:hover { background: var(--primary-hover); }
         
-        .list-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            -webkit-overflow-scrolling: touch;
+        .add-section-card {
+            background: var(--card-bg);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
         }
-        .list-selector::-webkit-scrollbar { height: 4px; }
-        .list-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-        .list-tab {
-            padding: 10px 20px;
-            background: var(--surface);
+        .add-section-card input {
+            width: 100%;
+            padding: 12px 16px;
             border: 1px solid var(--border);
-            border-radius: 20px;
-            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 12px;
             font-size: 14px;
-            white-space: nowrap;
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+        }
+        .add-section-card input:focus { border-color: var(--primary); outline: none; }
+        
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
             transition: all 0.2s;
         }
-        .list-tab.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .add-list-btn {
-            padding: 10px 20px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-ghost:hover { background: var(--border); }
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-secondary:hover { background: var(--secondary-hover); }
         
         .modal {
             display: none;
@@ -356,7 +280,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -364,111 +288,91 @@
         }
         .modal.active { display: flex; }
         .modal-content {
-            background: var(--surface);
+            background: var(--card-bg);
             padding: 28px;
             border-radius: 16px;
             width: 90%;
             max-width: 420px;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid var(--border);
         }
-        .modal h2 {
-            margin: 0 0 20px 0;
-            font-size: 20px;
-            color: var(--primary);
-        }
-        .modal label {
+        .modal-content h2 { margin-bottom: 20px; font-size: 1.25rem; color: var(--primary); }
+        .modal-content label {
             display: block;
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 0.875rem;
             color: var(--text-muted);
             margin-bottom: 6px;
         }
-        .modal input, .modal select {
+        .modal-content input, .modal-content select {
             width: 100%;
             padding: 12px 14px;
             margin-bottom: 16px;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 15px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
             -webkit-appearance: none;
         }
-        .modal input:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        .modal-buttons .btn { flex: 1; justify-content: center; }
+        .modal-content input:focus, .modal-content select:focus { border-color: var(--primary); outline: none; }
+        .modal-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .modal-buttons .btn { flex: 1; text-align: center; justify-content: center; }
         
-        .add-section-card {
-            background: var(--surface);
-            border: 2px dashed var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-        }
-        .add-section-card h3 {
-            color: var(--text-muted);
-            margin: 0 0 12px;
-            font-size: 14px;
-        }
-        .add-section-card input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
+        .summary-content {
+            background: var(--bg);
+            padding: 16px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-        .add-section-card input:focus {
-            border-color: var(--accent);
-            outline: none;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 13px;
+            white-space: pre-wrap;
+            margin-bottom: 16px;
         }
 
         @media (max-width: 600px) {
-            body { padding: 12px; }
-            .stats-panel { grid-template-columns: 1fr 1fr; }
-            .stat-card:last-child { grid-column: span 2; }
-            .item { padding: 12px 16px; }
-            .add-item-row { padding: 12px 16px; }
+            body { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .stat-box:last-child { grid-column: span 2; }
+            .item { padding: 10px 12px; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <button class="btn btn-ghost" onclick="undo()">↩ Undo</button>
-        <h1 class="page-title" id="pageTitle">Travel Checklist</h1>
-        <button class="btn btn-primary" onclick="showSettingsModal()">⚙ Settings</button>
+    <div class="container">
+        <header>
+            <h1>✈️ Travel Checklist</h1>
+            <div class="header-actions">
+                <button class="btn btn-ghost" onclick="undo()">↩ Undo</button>
+                <button class="btn btn-ghost" onclick="showSettingsModal()">⚙ Settings</button>
+            </div>
+        </header>
+
+        <div class="list-tabs" id="listSelector"></div>
+
+        <div class="card trip-info" id="tripInfo" onclick="showTripModal()">
+            <h3 id="tripDates">✈️ Trip Not Set</h3>
+            <p id="tripDetails">Tap to configure your trip</p>
+        </div>
+
+        <div class="stats-grid" id="statsPanel"></div>
+        <div class="progress-container" id="progressContainer"></div>
+
+        <div id="checklistContainer"></div>
+
+        <div class="add-section-card" id="addSectionDiv">
+            <input type="text" id="newSectionName" placeholder="New section name (e.g., 🎒 Daypack Items)">
+            <button class="btn btn-primary" onclick="addNewSection()" style="width:100%">+ Add Section</button>
+        </div>
     </div>
 
-    <div class="list-selector" id="listSelector"></div>
-
-    <div class="trip-info" id="tripInfo" onclick="showTripModal()">
-        <h3 id="tripDates">✈️ Trip: Not Set</h3>
-        <p id="tripDetails">Tap to set trip details</p>
-    </div>
-
-    <div class="stats-panel" id="statsPanel"></div>
-    <div class="progress-container" id="progressContainer"></div>
-
-    <div id="checklistContainer"></div>
-
-    <div class="add-section-card" id="addSectionDiv">
-        <h3>➕ Add New Section</h3>
-        <input type="text" id="newSectionName" placeholder="Section name (e.g., 🎒 Daypack Items)">
-        <button class="btn btn-accent" onclick="addNewSection()" style="width:100%">Add Section</button>
-    </div>
-
-    <!-- Trip Info Modal -->
+    <!-- Trip Modal -->
     <div class="modal" id="tripModal">
         <div class="modal-content">
             <h2>✏️ Trip Details</h2>
             <label>Destination</label>
-            <input type="text" id="tripCountry" placeholder="e.g., Japan, France, Bali">
+            <input type="text" id="tripCountry" placeholder="e.g., Japan, France">
             <label>Start Date</label>
             <input type="date" id="tripStart">
             <label>End Date</label>
@@ -476,7 +380,7 @@
             <label>Notes</label>
             <input type="text" id="tripNotes" placeholder="e.g., 3 days hiking, 5 days city">
             <div class="modal-buttons">
-                <button class="btn btn-accent" onclick="saveTripInfo()">Save</button>
+                <button class="btn btn-primary" onclick="saveTripInfo()">Save</button>
                 <button class="btn btn-ghost" onclick="closeModal('tripModal')">Cancel</button>
             </div>
         </div>
@@ -486,9 +390,9 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>⚙️ Settings</h2>
-            <button class="btn btn-accent" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">📋 Create New List</button>
-            <button class="btn btn-ghost" style="width:100%; margin-bottom:12px" onclick="generateSummary()">📊 Generate Summary</button>
-            <button class="btn btn-danger" style="width:100%" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+            <button class="btn btn-primary" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">📋 Create New List</button>
+            <button class="btn btn-secondary" style="width:100%; margin-bottom:12px" onclick="generateSummary()">📊 Generate Summary</button>
+            <button class="btn btn-ghost" style="width:100%" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
             <div class="modal-buttons">
                 <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
             </div>
@@ -510,7 +414,7 @@
                 <option value="empty">📝 Empty List</option>
             </select>
             <div class="modal-buttons">
-                <button class="btn btn-accent" onclick="createNewList()">Create</button>
+                <button class="btn btn-primary" onclick="createNewList()">Create</button>
                 <button class="btn btn-ghost" onclick="closeModal('newListModal')">Cancel</button>
             </div>
         </div>
@@ -520,7 +424,7 @@
     <div class="modal" id="summaryModal">
         <div class="modal-content">
             <h2>📊 Trip Summary</h2>
-            <div id="summaryContent"></div>
+            <div class="summary-content" id="summaryContent"></div>
             <div class="modal-buttons">
                 <button class="btn btn-primary" onclick="copySummary()">📋 Copy</button>
                 <button class="btn btn-ghost" onclick="closeModal('summaryModal')">Close</button>
@@ -534,49 +438,49 @@
                 name: 'Travel Checklist',
                 sections: [
                     { name: '📄 Documents & Money', items: [
-                        { name: 'Passport', qty: 1 },
-                        { name: 'Travel insurance documents', qty: '1 copy' },
-                        { name: 'Flight tickets', qty: '2 (round trip)' },
-                        { name: 'Hotel reservations', qty: 'as needed' },
-                        { name: 'Cash (local currency)', qty: 'as needed' },
-                        { name: 'Credit cards', qty: '1-2' }
+                        { name: 'Passport', qty: 1, checked: false },
+                        { name: 'Travel insurance documents', qty: '1 copy', checked: false },
+                        { name: 'Flight tickets', qty: '2 (round trip)', checked: false },
+                        { name: 'Hotel reservations', qty: 'as needed', checked: false },
+                        { name: 'Cash (local currency)', qty: 'as needed', checked: false },
+                        { name: 'Credit cards', qty: '1-2', checked: false }
                     ], isDefault: true },
                     { name: '🧥 Outerwear (if needed)', items: [
-                        { name: 'Jacket/Hoodie', qty: 1 },
-                        { name: 'Rain jacket', qty: 1 }
+                        { name: 'Jacket/Hoodie', qty: 1, checked: false },
+                        { name: 'Rain jacket', qty: 1, checked: false }
                     ], isDefault: true },
                     { name: '👕 Clothing', items: [
-                        { name: 'T-shirts', qty: '5-7' },
-                        { name: 'Pants/Shorts', qty: '3-5' },
-                        { name: 'Underwear', qty: '7 pairs' },
-                        { name: 'Socks', qty: '7 pairs' },
-                        { name: 'Sleepwear', qty: '2 sets' },
-                        { name: 'Comfortable shoes', qty: 1 }
+                        { name: 'T-shirts', qty: '5-7', checked: false },
+                        { name: 'Pants/Shorts', qty: '3-5', checked: false },
+                        { name: 'Underwear', qty: '7 pairs', checked: false },
+                        { name: 'Socks', qty: '7 pairs', checked: false },
+                        { name: 'Sleepwear', qty: '2 sets', checked: false },
+                        { name: 'Comfortable shoes', qty: 1, checked: false }
                     ], isDefault: true },
                     { name: '📱 Electronics', items: [
-                        { name: 'Phone', qty: 1 },
-                        { name: 'Charger', qty: 1 },
-                        { name: 'Power adapter', qty: 1 },
-                        { name: 'Portable power bank', qty: 1 },
-                        { name: 'Camera', qty: 1 },
-                        { name: 'Earphones', qty: 1 }
+                        { name: 'Phone', qty: 1, checked: false },
+                        { name: 'Charger', qty: 1, checked: false },
+                        { name: 'Power adapter', qty: 1, checked: false },
+                        { name: 'Portable power bank', qty: 1, checked: false },
+                        { name: 'Camera', qty: 1, checked: false },
+                        { name: 'Earphones', qty: 1, checked: false }
                     ], isDefault: true },
                     { name: '🧴 Toiletries & Medicine', items: [
-                        { name: 'Toothbrush', qty: 1 },
-                        { name: 'Toothpaste', qty: '1 tube' },
-                        { name: 'Shampoo', qty: '1 small' },
-                        { name: 'Shower gel', qty: '1 small' },
-                        { name: 'Deodorant', qty: 1 },
-                        { name: 'Sunscreen', qty: 1 },
-                        { name: 'Personal medications', qty: 'as needed' },
-                        { name: 'Lip balm', qty: 1 },
-                        { name: 'Hand cream', qty: 1 }
+                        { name: 'Toothbrush', qty: 1, checked: false },
+                        { name: 'Toothpaste', qty: '1 tube', checked: false },
+                        { name: 'Shampoo', qty: '1 small', checked: false },
+                        { name: 'Shower gel', qty: '1 small', checked: false },
+                        { name: 'Deodorant', qty: 1, checked: false },
+                        { name: 'Sunscreen', qty: 1, checked: false },
+                        { name: 'Personal medications', qty: 'as needed', checked: false },
+                        { name: 'Lip balm', qty: 1, checked: false },
+                        { name: 'Hand cream', qty: 1, checked: false }
                     ], isDefault: true },
                     { name: '🎒 Other Essentials', items: [
-                        { name: 'Day backpack', qty: 1 },
-                        { name: 'Umbrella', qty: 1 },
-                        { name: 'Sunglasses', qty: 1 },
-                        { name: 'Travel pillow', qty: 1 }
+                        { name: 'Day backpack', qty: 1, checked: false },
+                        { name: 'Umbrella', qty: 1, checked: false },
+                        { name: 'Sunglasses', qty: 1, checked: false },
+                        { name: 'Travel pillow', qty: 1, checked: false }
                     ], isDefault: true }
                 ]
             },
@@ -584,31 +488,31 @@
                 name: 'Beach Vacation',
                 sections: [
                     { name: '📄 Documents', items: [
-                        { name: 'Passport', qty: 1 },
-                        { name: 'Flight tickets', qty: 2 },
-                        { name: 'Hotel booking', qty: 'as needed' },
-                        { name: 'Travel insurance', qty: 1 }
+                        { name: 'Passport', qty: 1, checked: false },
+                        { name: 'Flight tickets', qty: 2, checked: false },
+                        { name: 'Hotel booking', qty: 'as needed', checked: false },
+                        { name: 'Travel insurance', qty: 1, checked: false }
                     ]},
                     { name: '🏖️ Beach Items', items: [
-                        { name: 'Swimsuit', qty: 2 },
-                        { name: 'Sunglasses', qty: 1 },
-                        { name: 'Sunscreen', qty: 1 },
-                        { name: 'Beach towel', qty: 1 },
-                        { name: 'Flip flops', qty: 1 },
-                        { name: 'Beach bag', qty: 1 },
-                        { name: 'Hat/Cap', qty: 1 }
+                        { name: 'Swimsuit', qty: 2, checked: false },
+                        { name: 'Sunglasses', qty: 1, checked: false },
+                        { name: 'Sunscreen', qty: 1, checked: false },
+                        { name: 'Beach towel', qty: 1, checked: false },
+                        { name: 'Flip flops', qty: 1, checked: false },
+                        { name: 'Beach bag', qty: 1, checked: false },
+                        { name: 'Hat/Cap', qty: 1, checked: false }
                     ]},
                     { name: '👕 Clothing', items: [
-                        { name: 'Shorts', qty: 3 },
-                        { name: 'T-shirts', qty: 4 },
-                        { name: 'Underwear', qty: '7 pairs' },
-                        { name: 'Light dress/coverup', qty: 1 }
+                        { name: 'Shorts', qty: 3, checked: false },
+                        { name: 'T-shirts', qty: 4, checked: false },
+                        { name: 'Underwear', qty: '7 pairs', checked: false },
+                        { name: 'Light dress/coverup', qty: 1, checked: false }
                     ]},
                     { name: '🧴 Toiletries', items: [
-                        { name: 'Toothbrush', qty: 1 },
-                        { name: 'Toothpaste', qty: 1 },
-                        { name: 'Shampoo', qty: 1 },
-                        { name: 'Aloe vera gel', qty: 1 }
+                        { name: 'Toothbrush', qty: 1, checked: false },
+                        { name: 'Toothpaste', qty: 1, checked: false },
+                        { name: 'Shampoo', qty: 1, checked: false },
+                        { name: 'Aloe vera gel', qty: 1, checked: false }
                     ]}
                 ]
             },
@@ -616,32 +520,32 @@
                 name: 'Business Trip',
                 sections: [
                     { name: '📄 Documents', items: [
-                        { name: 'Passport/ID', qty: 1 },
-                        { name: 'Flight tickets', qty: 2 },
-                        { name: 'Hotel confirmation', qty: 1 },
-                        { name: 'Business cards', qty: 'as needed' },
-                        { name: 'Meeting agenda', qty: 1 }
+                        { name: 'Passport/ID', qty: 1, checked: false },
+                        { name: 'Flight tickets', qty: 2, checked: false },
+                        { name: 'Hotel confirmation', qty: 1, checked: false },
+                        { name: 'Business cards', qty: 'as needed', checked: false },
+                        { name: 'Meeting agenda', qty: 1, checked: false }
                     ]},
                     { name: '👔 Business Attire', items: [
-                        { name: 'Suits', qty: 2 },
-                        { name: 'Dress shirts', qty: 3 },
-                        { name: 'Ties', qty: 2 },
-                        { name: 'Dress shoes', qty: 1 },
-                        { name: 'Belt', qty: 1 },
-                        { name: 'Underwear', qty: '4 pairs' },
-                        { name: 'Socks', qty: '4 pairs' }
+                        { name: 'Suits', qty: 2, checked: false },
+                        { name: 'Dress shirts', qty: 3, checked: false },
+                        { name: 'Ties', qty: 2, checked: false },
+                        { name: 'Dress shoes', qty: 1, checked: false },
+                        { name: 'Belt', qty: 1, checked: false },
+                        { name: 'Underwear', qty: '4 pairs', checked: false },
+                        { name: 'Socks', qty: '4 pairs', checked: false }
                     ]},
                     { name: '📱 Electronics', items: [
-                        { name: 'Laptop', qty: 1 },
-                        { name: 'Charger', qty: 1 },
-                        { name: 'Phone', qty: 1 },
-                        { name: 'Portable battery', qty: 1 }
+                        { name: 'Laptop', qty: 1, checked: false },
+                        { name: 'Charger', qty: 1, checked: false },
+                        { name: 'Phone', qty: 1, checked: false },
+                        { name: 'Portable battery', qty: 1, checked: false }
                     ]},
                     { name: '🧴 Toiletries', items: [
-                        { name: 'Toothbrush', qty: 1 },
-                        { name: 'Toothpaste', qty: 1 },
-                        { name: 'Deodorant', qty: 1 },
-                        { name: 'Shaving kit', qty: 1 }
+                        { name: 'Toothbrush', qty: 1, checked: false },
+                        { name: 'Toothpaste', qty: 1, checked: false },
+                        { name: 'Deodorant', qty: 1, checked: false },
+                        { name: 'Shaving kit', qty: 1, checked: false }
                     ]}
                 ]
             },
@@ -649,34 +553,34 @@
                 name: 'Camping Trip',
                 sections: [
                     { name: '📄 Documents', items: [
-                        { name: 'ID/Passport', qty: 1 },
-                        { name: 'Campsite reservation', qty: 1 },
-                        { name: 'Car insurance', qty: 1 }
+                        { name: 'ID/Passport', qty: 1, checked: false },
+                        { name: 'Campsite reservation', qty: 1, checked: false },
+                        { name: 'Car insurance', qty: 1, checked: false }
                     ]},
                     { name: '⛺ Camping Gear', items: [
-                        { name: 'Tent', qty: 1 },
-                        { name: 'Sleeping bag', qty: 1 },
-                        { name: 'Sleeping pad', qty: 1 },
-                        { name: 'Flashlight/Headlamp', qty: 1 },
-                        { name: 'First aid kit', qty: 1 },
-                        { name: 'Multi-tool', qty: 1 },
-                        { name: 'Fire starter', qty: 1 },
-                        { name: 'Water bottle', qty: 1 }
+                        { name: 'Tent', qty: 1, checked: false },
+                        { name: 'Sleeping bag', qty: 1, checked: false },
+                        { name: 'Sleeping pad', qty: 1, checked: false },
+                        { name: 'Flashlight/Headlamp', qty: 1, checked: false },
+                        { name: 'First aid kit', qty: 1, checked: false },
+                        { name: 'Multi-tool', qty: 1, checked: false },
+                        { name: 'Fire starter', qty: 1, checked: false },
+                        { name: 'Water bottle', qty: 1, checked: false }
                     ]},
                     { name: '👕 Clothing', items: [
-                        { name: 'Hiking boots', qty: 1 },
-                        { name: 'Rain jacket', qty: 1 },
-                        { name: 'Warm layers', qty: 2 },
-                        { name: 'Hiking pants', qty: 2 },
-                        { name: 'T-shirts', qty: 3 },
-                        { name: 'Underwear', qty: '4 pairs' },
-                        { name: 'Socks', qty: '4 pairs' }
+                        { name: 'Hiking boots', qty: 1, checked: false },
+                        { name: 'Rain jacket', qty: 1, checked: false },
+                        { name: 'Warm layers', qty: 2, checked: false },
+                        { name: 'Hiking pants', qty: 2, checked: false },
+                        { name: 'T-shirts', qty: 3, checked: false },
+                        { name: 'Underwear', qty: '4 pairs', checked: false },
+                        { name: 'Socks', qty: '4 pairs', checked: false }
                     ]},
                     { name: '🧴 Toiletries', items: [
-                        { name: 'Toothbrush', qty: 1 },
-                        { name: 'Toothpaste', qty: 1 },
-                        { name: 'Sunscreen', qty: 1 },
-                        { name: 'Insect repellent', qty: 1 }
+                        { name: 'Toothbrush', qty: 1, checked: false },
+                        { name: 'Toothpaste', qty: 1, checked: false },
+                        { name: 'Sunscreen', qty: 1, checked: false },
+                        { name: 'Insect repellent', qty: 1, checked: false }
                     ]}
                 ]
             },
@@ -700,18 +604,12 @@
 
         function saveToHistory() {
             history.push(JSON.stringify(lists));
-            if (history.length > MAX_HISTORY) {
-                history.shift();
-            }
+            if (history.length > MAX_HISTORY) history.shift();
         }
 
         function undo() {
-            if (history.length === 0) {
-                alert('Nothing to undo');
-                return;
-            }
-            const previousState = history.pop();
-            lists = JSON.parse(previousState);
+            if (history.length === 0) { alert('Nothing to undo'); return; }
+            lists = JSON.parse(history.pop());
             saveLists();
             renderListTabs();
             loadCurrentList();
@@ -726,35 +624,28 @@
                     saveLists();
                 }
             } else {
-                lists = {
-                    default: JSON.parse(JSON.stringify(templates.general))
-                };
+                lists = { default: JSON.parse(JSON.stringify(templates.general)) };
                 lists.default.isCustom = false;
                 saveLists();
             }
             history = [];
         }
 
-        function isListEditable() {
-            return lists[currentListId].isCustom !== false;
-        }
-
-        function saveLists() {
-            localStorage.setItem('travelChecklistLists', JSON.stringify(lists));
-        }
+        function isListEditable() { return lists[currentListId].isCustom !== false; }
+        function saveLists() { localStorage.setItem('travelChecklistLists', JSON.stringify(lists)); }
 
         function renderListTabs() {
             const container = document.getElementById('listSelector');
             container.innerHTML = '';
             Object.keys(lists).forEach(id => {
                 const btn = document.createElement('button');
-                btn.className = 'list-tab' + (id === currentListId ? ' active' : '');
+                btn.className = 'tab' + (id === currentListId ? ' active' : '');
                 btn.textContent = lists[id].name;
                 btn.onclick = () => switchList(id);
                 container.appendChild(btn);
             });
             const addBtn = document.createElement('button');
-            addBtn.className = 'add-list-btn';
+            addBtn.className = 'tab-add';
             addBtn.textContent = '+';
             addBtn.onclick = showNewListModal;
             container.appendChild(addBtn);
@@ -768,17 +659,14 @@
 
         function loadCurrentList() {
             const list = lists[currentListId];
-            document.getElementById('pageTitle').textContent = list.name || 'Travel Checklist';
             
             if (list.trip) {
                 document.getElementById('tripDates').textContent = `✈️ ${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
-                const dateRange = list.trip.start && list.trip.end 
-                    ? `${formatDate(list.trip.start)} → ${formatDate(list.trip.end)}`
-                    : (list.trip.start ? formatDate(list.trip.start) : 'Dates not set');
+                const dateRange = list.trip.start && list.trip.end ? `${formatDate(list.trip.start)} → ${formatDate(list.trip.end)}` : (list.trip.start ? formatDate(list.trip.start) : 'Dates not set');
                 document.getElementById('tripDetails').textContent = dateRange + (list.trip.notes ? ' • ' + list.trip.notes : '');
             } else {
                 document.getElementById('tripDates').textContent = '✈️ Trip Not Set';
-                document.getElementById('tripDetails').textContent = 'Tap to configure your trip details';
+                document.getElementById('tripDetails').textContent = 'Tap to configure your trip';
             }
 
             document.getElementById('addSectionDiv').style.display = isListEditable() ? 'block' : 'none';
@@ -789,34 +677,18 @@
 
         function formatDate(dateStr) {
             if (!dateStr) return '';
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
 
         function renderStats() {
-            const statsPanel = document.getElementById('statsPanel');
+            const panel = document.getElementById('statsPanel');
             const list = lists[currentListId];
-            let total = 0, checked = 0, sections = list.sections.length;
-            list.sections.forEach(s => {
-                s.items.forEach(i => {
-                    total++;
-                    if (i.checked) checked++;
-                });
-            });
-            const remaining = total - checked;
-            statsPanel.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-value">${checked}</div>
-                    <div class="stat-label">Packed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">${remaining}</div>
-                    <div class="stat-label">Remaining</div>
-                </div>
-                <div class="stat-card ${remaining === 0 ? 'highlight' : ''}">
-                    <div class="stat-value">${sections}</div>
-                    <div class="stat-label">Sections</div>
-                </div>
+            let total = 0, checked = 0;
+            list.sections.forEach(s => s.items.forEach(i => { total++; if (i.checked) checked++; }));
+            panel.innerHTML = `
+                <div class="stat-box"><div class="stat-value">${checked}</div><div class="stat-label">Packed</div></div>
+                <div class="stat-box"><div class="stat-value">${total - checked}</div><div class="stat-label">Remaining</div></div>
+                <div class="stat-box"><div class="stat-value">${list.sections.length}</div><div class="stat-label">Sections</div></div>
             `;
         }
 
@@ -824,21 +696,14 @@
             const container = document.getElementById('progressContainer');
             const list = lists[currentListId];
             let total = 0, checked = 0;
-            list.sections.forEach(s => {
-                s.items.forEach(i => {
-                    total++;
-                    if (i.checked) checked++;
-                });
-            });
+            list.sections.forEach(s => s.items.forEach(i => { total++; if (i.checked) checked++; }));
             const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
             container.innerHTML = `
                 <div class="progress-header">
-                    <span class="progress-text">Packing Progress</span>
-                    <span class="progress-percent">${percent}% Complete</span>
+                    <span>Packing Progress</span>
+                    <span style="color:var(--primary)">${percent}% Complete</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${percent}%"></div>
-                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
             `;
         }
 
@@ -849,22 +714,22 @@
             const editable = isListEditable();
 
             list.sections.forEach((section, sIdx) => {
+                const checkedInSection = section.items.filter(i => i.checked).length;
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section';
                 const canDelete = editable && !section.isDefault;
-                const checkedInSection = section.items.filter(i => i.checked).length;
                 sectionDiv.innerHTML = `
                     <div class="section-header">
-                        <h2>${section.name} <span class="section-count">${checkedInSection}/${section.items.length}</span></h2>
-                        ${canDelete ? `<button class="btn btn-danger" onclick="deleteSection(${sIdx})" style="padding:6px 12px;font-size:12px">Delete</button>` : ''}
+                        <h2>${section.name} <span class="section-badge">${checkedInSection}/${section.items.length}</span></h2>
+                        ${canDelete ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
                     </div>
                 `;
+
                 section.items.forEach((item, iIdx) => {
-                    const checkedClass = item.checked ? 'checked' : '';
                     const itemDiv = document.createElement('div');
-                    itemDiv.className = `item ${checkedClass}`;
+                    itemDiv.className = `item ${item.checked ? 'checked' : ''}`;
                     itemDiv.innerHTML = `
-                        <div class="checkbox ${checkedClass}" onclick="toggleItem(${sIdx}, ${iIdx})"></div>
+                        <div class="checkbox ${item.checked ? 'checked' : ''}" onclick="toggleItem(${sIdx}, ${iIdx})"></div>
                         <span class="item-name">${item.name}</span>
                         <input type="text" class="item-qty" value="${item.qty}" ${!editable ? 'readonly' : ''} onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
                         ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">×</button>` : ''}
@@ -872,14 +737,14 @@
                     sectionDiv.appendChild(itemDiv);
                 });
 
-                const addItemRow = document.createElement('div');
-                addItemRow.className = 'add-item-row';
-                addItemRow.innerHTML = `
+                const addRow = document.createElement('div');
+                addRow.className = 'add-item-row';
+                addRow.innerHTML = `
                     <input type="text" id="newItemName_${sIdx}" placeholder="Item name">
                     <input type="text" id="newItemQty_${sIdx}" placeholder="Qty" style="width:70px">
                     <button class="add-btn" onclick="addItemToSection(${sIdx})">Add</button>
                 `;
-                sectionDiv.appendChild(addItemRow);
+                sectionDiv.appendChild(addRow);
                 container.appendChild(sectionDiv);
             });
         }
@@ -900,12 +765,9 @@
         }
 
         function addItemToSection(sIdx) {
-            const nameInput = document.getElementById(`newItemName_${sIdx}`);
-            const qtyInput = document.getElementById(`newItemQty_${sIdx}`);
-            const name = nameInput.value.trim();
-            const qty = qtyInput.value.trim() || '1';
+            const name = document.getElementById(`newItemName_${sIdx}`).value.trim();
+            const qty = document.getElementById(`newItemQty_${sIdx}`).value.trim() || '1';
             if (!name) return;
-
             saveToHistory();
             lists[currentListId].sections[sIdx].items.push({ name, qty, checked: false });
             saveLists();
@@ -926,7 +788,6 @@
         function addNewSection() {
             const name = document.getElementById('newSectionName').value.trim();
             if (!name) return;
-            
             saveToHistory();
             lists[currentListId].sections.push({ name, items: [], isDefault: false });
             document.getElementById('newSectionName').value = '';
@@ -947,8 +808,6 @@
             }
         }
 
-        // --- Summary Feature (adapted from Summarization Skill) ---
-        
         function generateSummary() {
             closeModal('settingsModal');
             const list = lists[currentListId];
@@ -958,44 +817,32 @@
                 bySection[s.name] = { total: s.items.length, packed: 0, items: [] };
                 s.items.forEach(i => {
                     total++;
-                    if (i.checked) {
-                        checked++;
-                        bySection[s.name].packed++;
-                    }
+                    if (i.checked) { checked++; bySection[s.name].packed++; }
                     bySection[s.name].items.push({ name: i.name, qty: i.qty, packed: i.checked });
                 });
             });
 
             const trip = list.trip || {};
             const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
-            
-            // TLDR
             const status = percent === 100 ? '✅ Fully Packed!' : percent > 50 ? '🧳 Well Underway' : '📝 Just Started';
             
-            // Generate summary text
             let summary = `# ${list.name} — ${trip.country || 'Travel'} Summary\n`;
             summary += `${'='.repeat(list.name.length + 15)}\n\n`;
-            
             summary += `**Status:** ${status}\n`;
             summary += `**Progress:** ${checked}/${total} items packed (${percent}%)\n\n`;
-            
             if (trip.start || trip.end) {
                 summary += `**Trip:** ${trip.start || 'TBD'} → ${trip.end || 'TBD'}\n`;
                 if (trip.notes) summary += `**Notes:** ${trip.notes}\n`;
                 summary += '\n';
             }
-            
             summary += `---\n\n## 📦 Packed Items (${checked})\n`;
             Object.entries(bySection).forEach(([sec, data]) => {
                 const packed = data.items.filter(i => i.packed);
                 if (packed.length > 0) {
                     summary += `\n### ${sec}\n`;
-                    packed.forEach(i => {
-                        summary += `- [x] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`;
-                    });
+                    packed.forEach(i => summary += `- [x] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`);
                 }
             });
-            
             const unpacked = total - checked;
             if (unpacked > 0) {
                 summary += `\n---\n\n## ⬜ Still to Pack (${unpacked})\n`;
@@ -1003,47 +850,32 @@
                     const unp = data.items.filter(i => !i.packed);
                     if (unp.length > 0) {
                         summary += `\n### ${sec}\n`;
-                        unp.forEach(i => {
-                            summary += `- [ ] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`;
-                        });
+                        unp.forEach(i => summary += `- [ ] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`);
                     }
                 });
             }
-            
             summary += `\n---\n*Generated on ${new Date().toLocaleDateString()}*\n`;
             
             currentSummary = summary;
-            document.getElementById('summaryContent').innerHTML = `<pre style="white-space:pre-wrap;font-size:13px;background:#f8fafc;padding:16px;border-radius:8px;max-height:400px;overflow-y:auto">${summary}</pre>`;
+            document.getElementById('summaryContent').textContent = summary;
             document.getElementById('summaryModal').classList.add('active');
         }
 
         function copySummary() {
-            navigator.clipboard.writeText(currentSummary).then(() => {
-                alert('Summary copied to clipboard!');
-            }).catch(() => {
-                const ta = document.createElement('textarea');
-                ta.value = currentSummary;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
+            navigator.clipboard.writeText(currentSummary).then(() => alert('Summary copied!')).catch(() => {
+                const ta = document.createElement('textarea'); ta.value = currentSummary;
+                document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
                 alert('Summary copied!');
             });
         }
 
         function showTripModal() {
             const list = lists[currentListId];
-            if (list.trip) {
-                document.getElementById('tripCountry').value = list.trip.country || '';
-                document.getElementById('tripStart').value = list.trip.start || '';
-                document.getElementById('tripEnd').value = list.trip.end || '';
-                document.getElementById('tripNotes').value = list.trip.notes || '';
-            } else {
-                document.getElementById('tripCountry').value = '';
-                document.getElementById('tripStart').value = '';
-                document.getElementById('tripEnd').value = '';
-                document.getElementById('tripNotes').value = '';
-            }
+            document.getElementById('tripCountry').value = list.trip?.country || '';
+            document.getElementById('tripStart').value = list.trip?.start || '';
+            document.getElementById('tripEnd').value = list.trip?.end || '';
+            document.getElementById('tripNotes').value = list.trip?.notes || '';
             document.getElementById('tripModal').classList.add('active');
         }
 
@@ -1060,9 +892,7 @@
             loadCurrentList();
         }
 
-        function showSettingsModal() {
-            document.getElementById('settingsModal').classList.add('active');
-        }
+        function showSettingsModal() { document.getElementById('settingsModal').classList.add('active'); }
 
         function showNewListModal() {
             document.getElementById('newListModal').classList.add('active');
@@ -1073,13 +903,10 @@
             const name = document.getElementById('newListName').value.trim();
             const template = document.getElementById('templateSelect').value;
             if (!name) return;
-
             const newId = 'list_' + Date.now();
-            const templateData = templates[template];
-            lists[newId] = JSON.parse(JSON.stringify(templateData));
+            lists[newId] = JSON.parse(JSON.stringify(templates[template]));
             lists[newId].name = name;
             lists[newId].isCustom = true;
-            
             currentListId = newId;
             saveToHistory();
             saveLists();
@@ -1090,11 +917,9 @@
 
         function resetToDefaults() {
             closeModal('settingsModal');
-            if (confirm('Reset all lists to defaults? This will delete all custom lists.')) {
+            if (confirm('Reset all lists to defaults?')) {
                 saveToHistory();
-                lists = {
-                    default: JSON.parse(JSON.stringify(templates.general))
-                };
+                lists = { default: JSON.parse(JSON.stringify(templates.general)) };
                 currentListId = 'default';
                 saveLists();
                 renderListTabs();
@@ -1102,14 +927,10 @@
             }
         }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         window.onclick = function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
+            if (e.target.classList.contains('modal')) e.target.classList.remove('active');
         }
 
         init();
