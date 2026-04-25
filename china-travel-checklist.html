@@ -264,7 +264,6 @@
         .btn-secondary:hover { background: var(--secondary-hover); }
         
         .modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -854,7 +853,6 @@
         }
 
         function showTripModal() {
-            alert('Trip clicked');
             const list = lists[currentListId];
             document.getElementById('tripCountry').value = list.trip?.country || '';
             document.getElementById('tripStart').value = list.trip?.start || '';
@@ -877,17 +875,15 @@
         }
 
         function showSettingsModal() { 
-            alert('Settings clicked');
             document.getElementById('settingsModal').style.display = 'flex'; 
         }
 
 function showNewListModal() {
-            alert('New list clicked');
             document.getElementById('newListModal').style.display = 'flex';
             document.getElementById('settingsModal').style.display = 'none';
         }
 
-        function createNewList() {
+function createNewList() {
             const name = document.getElementById('newListName').value.trim();
             const template = document.getElementById('templateSelect').value;
             if (!name) { alert('Please enter a list name'); return; }
@@ -914,10 +910,6 @@ function showNewListModal() {
                 renderListTabs();
                 loadCurrentList();
             }
-        }
-
-        function closeModal(id) { 
-            document.getElementById(id).style.display = 'none';
         }
 
         init();
