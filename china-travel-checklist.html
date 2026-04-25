@@ -358,7 +358,7 @@
     </div>
 
     <!-- Trip Modal -->
-    <div class="modal" id="tripModal">
+    <div class="modal" id="tripModal" style="display:none">
         <div class="modal-content">
             <h2>Trip Details</h2>
             <label>Destination</label>
@@ -377,7 +377,7 @@
     </div>
 
     <!-- Settings Modal -->
-    <div class="modal" id="settingsModal">
+    <div class="modal" id="settingsModal" style="display:none">
         <div class="modal-content">
             <h2>Settings</h2>
             <button class="btn btn-primary" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">Create New List</button>
@@ -390,7 +390,7 @@
     </div>
 
     <!-- New List Modal -->
-    <div class="modal" id="newListModal">
+    <div class="modal" id="newListModal" style="display:none">
         <div class="modal-content">
             <h2>New List</h2>
             <label>List Name</label>
@@ -411,7 +411,7 @@
     </div>
 
     <!-- Summary Modal -->
-    <div class="modal" id="summaryModal">
+    <div class="modal" id="summaryModal" style="display:none">
         <div class="modal-content">
             <h2>Trip Summary</h2>
             <div class="summary-content" id="summaryContent"></div>
@@ -913,13 +913,36 @@
             }
         }
 
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function closeModal(id) { 
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        }
+        
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'flex';
+        }
 
-        window.onclick = function(e) {
-            if (e.target.classList.contains('modal')) e.target.classList.remove('active');
+        function showTripModal() { openModal('tripModal'); }
+
+        function showSettingsModal() { openModal('settingsModal'); }
+
+        function showNewListModal() {
+            openModal('newListModal');
+            closeModal('settingsModal');
+        }
+
+        function showSummaryModal() {
+            openModal('summaryModal');
         }
 
         init();
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
