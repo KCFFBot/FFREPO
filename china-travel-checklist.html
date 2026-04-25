@@ -8,19 +8,19 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg: #f5f5f7;
-            --card-bg: #ffffff;
-            --primary: #0071e3;
-            --primary-hover: #0077ed;
-            --secondary: #f5a623;
-            --danger: #ff3b30;
-            --text: #1d1d1f;
-            --text-muted: #86868b;
-            --border: #d2d2d7;
+            --bg: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary: #f59e0b;
+            --danger: #ef4444;
+            --text: #e5e5e5;
+            --text-muted: #a3a3a3;
+            --border: #404040;
         }
         body {
             font-family: 'Outfit', sans-serif;
-            background: var(--bg);
+            background: #1a1a1a;
             color: var(--text);
             min-height: 100vh;
             padding: 24px;
@@ -33,20 +33,16 @@
         header h1 {
             font-size: 2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), #5856d6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #e5e5e5;
         }
         .header-actions { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
         
         .card {
-            background: var(--card-bg);
+            background: #2d2d2d;
             border-radius: 16px;
             padding: 20px;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
             margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         }
         .card-title {
             font-size: 1rem;
@@ -68,9 +64,9 @@
         .tab {
             padding: 10px 18px;
             border-radius: 20px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-muted);
+            border: 1px solid #404040;
+            background: #262626;
+            color: #a3a3a3;
             cursor: pointer;
             font-size: 14px;
             white-space: nowrap;
@@ -78,30 +74,31 @@
             font-family: inherit;
         }
         .tab.active {
-            background: var(--primary);
-            border-color: var(--primary);
+            background: #3b82f6;
+            border-color: #3b82f6;
             color: white;
         }
-        .tab:hover:not(.active) { background: var(--border); }
+        .tab:hover:not(.active) { background: #333333; }
         .tab-add {
             padding: 10px 18px;
             border-radius: 20px;
-            border: 1px dashed var(--border);
+            border: 1px dashed #404040;
             background: transparent;
-            color: var(--primary);
+            color: #3b82f6;
             cursor: pointer;
             font-size: 14px;
         }
         
         .trip-info {
-            background: linear-gradient(135deg, var(--card-bg), #f0f0f5);
-            border: 1px solid var(--border);
+            background: #2d2d2d;
+            border: 1px solid #404040;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .trip-info:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-        .trip-info h3 { color: var(--primary); margin-bottom: 4px; }
-        .trip-info p { color: var(--text-muted); font-size: 14px; }
+        .trip-info:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+        .trip-info h3 { color: #3b82f6; margin-bottom: 4px; }
+        .trip-info p { color: #a3a3a3; font-size: 14px; }
         
         .stats-grid {
             display: grid;
@@ -110,25 +107,25 @@
             margin-bottom: 16px;
         }
         .stat-box {
-            background: var(--card-bg);
+            background: #2d2d2d;
             border-radius: 12px;
             padding: 16px;
             text-align: center;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
         }
-        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #3b82f6; }
+        .stat-label { font-size: 0.75rem; color: #a3a3a3; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
         
         .progress-container { margin-bottom: 16px; }
-        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-        .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 4px; transition: width 0.5s ease; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: #a3a3a3; }
+        .progress-bar { height: 8px; background: #404040; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #3b82f6; border-radius: 4px; transition: width 0.5s ease; }
         
         .section {
-            background: var(--card-bg);
+            background: #2d2d2d;
             border-radius: 12px;
             margin-bottom: 12px;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
             overflow: hidden;
         }
         .section-header {
@@ -136,8 +133,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 16px;
-            background: rgba(0,0,0,0.02);
-            border-bottom: 1px solid var(--border);
+            background: #262626;
+            border-bottom: 1px solid #404040;
         }
         .section-header h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .section-badge { background: var(--primary); color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; }
@@ -147,18 +144,18 @@
             display: flex;
             align-items: center;
             padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #404040;
             transition: background 0.15s;
         }
         .item:last-child { border-bottom: none; }
-        .item:hover { background: rgba(0,0,0,0.04); }
+        .item:hover { background: #333333; }
         .item.checked { opacity: 0.5; }
-        .item.checked .item-name { text-decoration: line-through; }
+        .item.checked .item-name { text-decoration: line-through; color: #a3a3a3; }
         
         .checkbox {
             width: 24px;
             height: 24px;
-            border: 2px solid var(--border);
+            border: 2px solid #404040;
             border-radius: 6px;
             margin-right: 12px;
             cursor: pointer;
@@ -168,27 +165,27 @@
             transition: all 0.2s;
             flex-shrink: 0;
         }
-        .checkbox:hover { border-color: var(--primary); }
+        .checkbox:hover { border-color: #3b82f6; }
         .checkbox.checked {
-            background: var(--primary);
-            border-color: var(--primary);
+            background: #3b82f6;
+            border-color: #3b82f6;
         }
         .checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 14px; }
         
         .item-name { flex: 1; font-size: 15px; }
         .item-qty {
-            color: var(--text-muted);
+            color: #a3a3a3;
             font-size: 13px;
             padding: 6px 10px;
             border: 1px solid transparent;
             border-radius: 6px;
-            background: var(--bg);
+            background: #1a1a1a;
             margin: 0 10px;
             text-align: center;
             min-width: 70px;
             font-family: inherit;
         }
-        .item-qty:focus { border-color: var(--primary); outline: none; }
+        .item-qty:focus { border-color: #3b82f6; outline: none; }
         .item-qty[readonly] { background: transparent; border-color: transparent; }
         
         .delete-item-btn {
@@ -207,20 +204,20 @@
             display: flex;
             gap: 10px;
             padding: 12px 16px;
-            background: rgba(0,0,0,0.02);
+            background: #262626;
             flex-wrap: wrap;
         }
         .add-item-row input {
             padding: 10px 14px;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
             border-radius: 8px;
             font-size: 14px;
-            background: var(--bg);
-            color: var(--text);
+            background: #1a1a1a;
+            color: #e5e5e5;
             font-family: inherit;
             -webkit-appearance: none;
         }
-        .add-item-row input:focus { border-color: var(--primary); outline: none; }
+        .add-item-row input:focus { border-color: #3b82f6; outline: none; }
         .add-item-row input[type="text"] { flex: 2; min-width: 100px; }
         .add-item-row input[type="text]:last-of-type { flex: 1; max-width: 80px; }
         .add-btn {
@@ -238,8 +235,8 @@
         .add-btn:hover { background: var(--primary-hover); }
         
         .add-section-card {
-            background: var(--card-bg);
-            border: 2px dashed var(--border);
+            background: #2d2d2d;
+            border: 2px dashed #404040;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
@@ -247,15 +244,15 @@
         .add-section-card input {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
             border-radius: 8px;
             margin-bottom: 12px;
             font-size: 14px;
-            background: var(--bg);
-            color: var(--text);
+            background: #1a1a1a;
+            color: #e5e5e5;
             font-family: inherit;
         }
-        .add-section-card input:focus { border-color: var(--primary); outline: none; }
+        .add-section-card input:focus { border-color: #3b82f6; outline: none; }
         
         .btn {
             padding: 10px 16px;
@@ -267,12 +264,12 @@
             font-family: inherit;
             transition: all 0.2s;
         }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-        .btn-ghost:hover { background: var(--border); }
-        .btn-secondary { background: var(--secondary); color: white; }
-        .btn-secondary:hover { background: var(--secondary-hover); }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-ghost { background: #262626; border: 1px solid #404040; color: #e5e5e5; }
+        .btn-ghost:hover { background: #333333; }
+        .btn-secondary { background: #f59e0b; color: #1a1a1a; }
+        .btn-secondary:hover { background: #d97706; }
         
         .modal {
             display: none;
@@ -281,48 +278,47 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
         }
         .modal.active { display: flex; }
         .modal-content {
-            background: var(--card-bg);
+            background: #2d2d2d;
             padding: 28px;
             border-radius: 16px;
             width: 90%;
             max-width: 420px;
             max-height: 90vh;
             overflow-y: auto;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
         }
-        .modal-content h2 { margin-bottom: 20px; font-size: 1.25rem; color: var(--primary); }
+        .modal-content h2 { margin-bottom: 20px; font-size: 1.25rem; color: #3b82f6; }
         .modal-content label {
             display: block;
             font-size: 0.875rem;
-            color: var(--text-muted);
+            color: #a3a3a3;
             margin-bottom: 6px;
         }
         .modal-content input, .modal-content select {
             width: 100%;
             padding: 12px 14px;
             margin-bottom: 16px;
-            border: 1px solid var(--border);
+            border: 1px solid #404040;
             border-radius: 8px;
             font-size: 15px;
-            background: var(--bg);
-            color: var(--text);
+            background: #1a1a1a;
+            color: #e5e5e5;
             font-family: inherit;
             -webkit-appearance: none;
         }
-        .modal-content input:focus, .modal-content select:focus { border-color: var(--primary); outline: none; }
+        .modal-content input:focus, .modal-content select:focus { border-color: #3b82f6; outline: none; }
         .modal-buttons { display: flex; gap: 12px; margin-top: 20px; }
         .modal-buttons .btn { flex: 1; text-align: center; justify-content: center; }
         
         .summary-content {
-            background: var(--bg);
+            background: #1a1a1a;
             padding: 16px;
             border-radius: 8px;
             max-height: 400px;
@@ -330,6 +326,7 @@
             font-size: 13px;
             white-space: pre-wrap;
             margin-bottom: 16px;
+            border: 1px solid #404040;
         }
 
         @media (max-width: 600px) {
@@ -337,13 +334,14 @@
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-box:last-child { grid-column: span 2; }
             .item { padding: 10px 12px; }
+            header h1 { font-size: 1.75rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>✈️ Travel Checklist</h1>
+            <h1>Travel Checklist</h1>
             <div class="header-actions">
                 <button class="btn btn-ghost" onclick="undo()">↩ Undo</button>
                 <button class="btn btn-ghost" onclick="showSettingsModal()">⚙ Settings</button>
@@ -353,7 +351,7 @@
         <div class="list-tabs" id="listSelector"></div>
 
         <div class="card trip-info" id="tripInfo" onclick="showTripModal()">
-            <h3 id="tripDates">✈️ Trip Not Set</h3>
+            <h3 id="tripDates">Trip Not Set</h3>
             <p id="tripDetails">Tap to configure your trip</p>
         </div>
 
@@ -662,11 +660,11 @@
             const list = lists[currentListId];
             
             if (list.trip) {
-                document.getElementById('tripDates').textContent = `✈️ ${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
+                document.getElementById('tripDates').textContent = `${list.trip.country || 'Trip to ' + (list.trip.start ? formatDate(list.trip.start) : 'Unnamed')}`;
                 const dateRange = list.trip.start && list.trip.end ? `${formatDate(list.trip.start)} → ${formatDate(list.trip.end)}` : (list.trip.start ? formatDate(list.trip.start) : 'Dates not set');
                 document.getElementById('tripDetails').textContent = dateRange + (list.trip.notes ? ' • ' + list.trip.notes : '');
             } else {
-                document.getElementById('tripDates').textContent = '✈️ Trip Not Set';
+                document.getElementById('tripDates').textContent = 'Trip Not Set';
                 document.getElementById('tripDetails').textContent = 'Tap to configure your trip';
             }
 
