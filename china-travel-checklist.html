@@ -446,7 +446,7 @@
     <script>
         const templates = {
             general: {
-                name: 'Travel Checklist',
+                name: 'Default Checklist',
                 sections: [
                     { name: 'Documents & Money', items: [
                         { name: 'Passport', qty: 1, checked: false },
@@ -631,7 +631,7 @@
             if (saved) {
                 lists = JSON.parse(saved);
                 if (lists.default && lists.default.name === 'China Trip') {
-                    lists.default.name = 'Travel Checklist';
+                    lists.default.name = 'Default Checklist';
                     saveLists();
                 }
             } else {
