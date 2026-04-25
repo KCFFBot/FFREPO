@@ -1,0 +1,97 @@
+import { useMemo, useState } from "react";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/dashboard/AppSidebar";
+import { Header } from "@/components/dashboard/Header";
+import { ChecklistItem } from "@/components/dashboard/ChecklistItem";
+import { AddTaskForm } from "@/components/dashboard/AddTaskForm";
+import { StatsPanel } from "@/components/dashboard/StatsPanel";
+import type { Task } from "@/components/dashboard/types";
+
+const initialTasks: Task[] = [
+  { id: "1", title: "Close Acme Corp enterprise deal", category: "Sales", value: 8500, dueDate: "Apr 28", completed: true },
+  { id: "2", title: "Launch Q2 email campaign", category: "Marketing", value: 4200, dueDate: "Apr 30", completed: true },
+  { id: "3", title: "Redesign onboarding flow", category: "Design", value: 3800, dueDate: "May 02", completed: false },
+  { id: "4", title: "Ship payments integration v2", category: "Development", value: 12000, dueDate: "May 05", completed: false },
+  { id: "5", title: "Vendor contract renewal", category: "Operations", value: 2500, dueDate: "May 08", completed: false },
+  { id: "6", title: "Demo call with Linear team", category: "Sales", value: 6500, dueDate: "May 10", completed: false },
+  { id: "7", title: "SEO audit & content brief", category: "Marketing", value: 3800, dueDate: "Apr 26", completed: true },
+];
+
+const Index = () => {
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [adding, setAdding] = useState(false);
+
+  const monthlyGoal = 65000;
+
+  const sorted = useMemo(
+    () => [...tasks].sort((a, b) => Number(a.completed) - Number(b.completed)),
+    [tasks]
+  );
+
+  const completedCount = tasks.filter((t) => t.completed).length;
+
+  const toggle = (id: string) =>
+    setTasks((t) => t.map((x) => (x.id === id ? { ...x, completed: !x.completed } : x)));
+  const update = (id: string, title: string) =>
+    setTasks((t) => t.map((x) => (x.id === id ? { ...x, title } : x)));
+  const remove = (id: string) => setTasks((t) => t.filter((x) => x.id !== id));
+  const add = (task: Omit<Task, "id" | "completed">) =>
+    setTasks((t) => [{ ...task, id: crypto.randomUUID(), completed: false }, ...t]);
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        {/* Ambient glow accents */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden -z-10">
+          <div className="absolute top-1/4 -left-32 h-96 w-96 rounded-full bg-primary/10 blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-[hsl(220_90%_50%/0.08)] blur-[120px]" />
+        </div>
+
+        <AppSidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <Header onAddNew={() => setAdding(true)} />
+          <main className="flex-1 p-4 md:p-8">
+            <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+                  Tuesday, April 25
+                </p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+                  Good morning, Alex
+                </h1>
+                <p className="text-sm text-muted-foreground mt-2">
+                  You've completed{" "}
+                  <span className="text-primary font-semibold">{completedCount} of {tasks.length}</span> tasks this week. Keep the momentum going.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
+              <section className="space-y-3">
+                <div className="flex items-center justify-between mb-2 px-1">
+                  <h2 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">
+                    Today's Checklist
+                  </h2>
+                  <span className="text-xs text-muted-foreground">{tasks.length} items</span>
+                </div>
+                <AddTaskForm open={adding} onOpenChange={setAdding} onAdd={add} />
+                {sorted.map((task) => (
+                  <ChecklistItem
+                    key={task.id}
+                    task={task}
+                    onToggle={toggle}
+                    onUpdate={update}
+                    onDelete={remove}
+                  />
+                ))}
+              </section>
+              <StatsPanel tasks={tasks} monthlyGoal={monthlyGoal} />
+            </div>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+};
+
+export default Index;

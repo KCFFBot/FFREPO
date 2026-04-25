@@ -1,0 +1,105 @@
+import { useState } from "react";
+import { Check, Pencil, Trash2, X, Calendar as CalendarIcon } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { CATEGORY_COLORS, type Task } from "./types";
+
+interface Props {
+  task: Task;
+  onToggle: (id: string) => void;
+  onUpdate: (id: string, title: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export function ChecklistItem({ task, onToggle, onUpdate, onDelete }: Props) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(task.title);
+
+  const save = () => {
+    if (draft.trim()) onUpdate(task.id, draft.trim());
+    setEditing(false);
+  };
+
+  return (
+    <div
+      className={cn(
+        "group flex items-center gap-4 rounded-2xl border border-border/40 bg-card/40 px-4 py-3.5 backdrop-blur-md transition-all hover:bg-card/70 hover:border-border/70",
+        task.completed && "opacity-60 hover:opacity-80"
+      )}
+    >
+      <Checkbox
+        checked={task.completed}
+        onCheckedChange={() => onToggle(task.id)}
+        className={cn(
+          "h-5 w-5 rounded-full border-border/60 transition-all",
+          task.completed &&
+            "data-[state=checked]:bg-success data-[state=checked]:border-success data-[state=checked]:shadow-[0_0_12px_hsl(158_70%_55%/0.6)]"
+        )}
+      />
+
+      <div className="flex-1 min-w-0">
+        {editing ? (
+          <Input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") save();
+              if (e.key === "Escape") setEditing(false);
+            }}
+            autoFocus
+            className="h-8 bg-muted/40 border-border/40"
+          />
+        ) : (
+          <p
+            className={cn(
+              "text-sm font-medium text-foreground/95 truncate",
+              task.completed && "line-through text-muted-foreground"
+            )}
+          >
+            {task.title}
+          </p>
+        )}
+        <div className="mt-1.5 flex flex-wrap items-center gap-2.5 text-xs text-muted-foreground">
+          <Badge variant="outline" className={cn("font-medium rounded-full px-2.5 py-0", CATEGORY_COLORS[task.category])}>
+            {task.category}
+          </Badge>
+          <span className="flex items-center gap-1.5">
+            <CalendarIcon className="h-3 w-3" />
+            {task.dueDate}
+          </span>
+          <span className="font-semibold text-foreground/90">${task.value.toLocaleString()}</span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+        {editing ? (
+          <>
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={save}>
+              <Check className="h-4 w-4 text-success" />
+            </Button>
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={() => setEditing(false)}>
+              <X className="h-4 w-4" />
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full hover:bg-muted/60" onClick={() => setEditing(true)}>
+              <Pencil className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 rounded-full hover:bg-destructive/20 hover:text-destructive"
+              onClick={() => onDelete(task.id)}
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

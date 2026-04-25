@@ -1,0 +1,18 @@
+export type TaskCategory = "Sales" | "Marketing" | "Design" | "Development" | "Operations";
+
+export interface Task {
+  id: string;
+  title: string;
+  category: TaskCategory;
+  value: number;
+  dueDate: string;
+  completed: boolean;
+}
+
+export const CATEGORY_COLORS: Record<TaskCategory, string> = {
+  Sales: "bg-primary/15 text-primary border-primary/30",
+  Marketing: "bg-warning/15 text-warning border-warning/30",
+  Design: "bg-[hsl(280_80%_70%/0.15)] text-[hsl(280_80%_75%)] border-[hsl(280_80%_70%/0.3)]",
+  Development: "bg-success/15 text-success border-success/30",
+  Operations: "bg-muted-foreground/15 text-muted-foreground border-muted-foreground/30",
+};
