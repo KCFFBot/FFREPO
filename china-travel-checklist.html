@@ -354,37 +354,61 @@
         </div>
     </div>
 
-    <!-- Trip Modal -->
-    <div class="modal" id="tripModal" style="display:none">
-        <div class="modal-content">
-            <h2>Trip Details</h2>
-            <label>Destination</label>
-            <input type="text" id="tripCountry" placeholder="e.g., Japan, France">
-            <label>Start Date</label>
-            <input type="date" id="tripStart">
-            <label>End Date</label>
-            <input type="date" id="tripEnd">
-            <label>Notes</label>
-            <input type="text" id="tripNotes" placeholder="e.g., 3 days hiking, 5 days city">
-            <div class="modal-buttons">
-                <button class="btn btn-primary" onclick="saveTripInfo()">Save</button>
-                <button class="btn btn-ghost" onclick="closeModal('tripModal')">Cancel</button>
-            </div>
+<!-- Trip Modal -->
+    <dialog id="tripModal" style="border:none;border-radius:24px;padding:28px;max-width:420px;width:90%;background:var(--card-bg);">
+        <h2 style="color:var(--primary);">Trip Details</h2>
+        <label style="color:var(--text-muted);">Destination</label>
+        <input type="text" id="tripCountry" placeholder="e.g., Japan, France">
+        <label style="color:var(--text-muted);">Start Date</label>
+        <input type="date" id="tripStart">
+        <label style="color:var(--text-muted);">End Date</label>
+        <input type="date" id="tripEnd">
+        <label style="color:var(--text-muted);">Notes</label>
+        <input type="text" id="tripNotes" placeholder="e.g., 3 days hiking, 5 days city">
+        <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="saveTripInfo()">Save</button>
+            <button class="btn btn-ghost" onclick="closeModal('tripModal')">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- New List Modal -->
+    <dialog id="newListModal" style="border:none;border-radius:24px;padding:28px;max-width:420px;width:90%;background:var(--card-bg);">
+        <h2 style="color:var(--primary);">New List</h2>
+        <label style="color:var(--text-muted);">List Name</label>
+        <input type="text" id="newListName" placeholder="e.g., Europe Trip 2025">
+        <label style="color:var(--text-muted);">Template</label>
+        <select id="templateSelect">
+            <option value="general">General Travel</option>
+            <option value="beach">Beach Vacation</option>
+            <option value="business">Business Trip</option>
+            <option value="camping">Camping</option>
+            <option value="empty">Empty List</option>
+        </select>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="createNewList()">Create</button>
+            <button class="btn btn-ghost" onclick="closeModal('newListModal')">Cancel</button>
+        </div>
+    </dialog>
+
+    <!-- Summary Modal -->
+    <dialog id="summaryModal" style="border:none;border-radius:24px;padding:28px;max-width:420px;width:90%;background:var(--card-bg);">
+        <h2 style="color:var(--primary);">Trip Summary</h2>
+        <div id="summaryContent" style="background:var(--bg);padding:16px;border-radius:16px;max-height:400px;overflow-y:auto;font-size:13px;"></div>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="copySummary()">Copy</button>
+            <button class="btn btn-ghost" onclick="closeModal('summaryModal')">Close</button>
+        </div>
+    </dialog>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div class="modal" id="settingsModal" style="display:none">
-        <div class="modal-content">
-            <h2>Settings</h2>
-            <button class="btn btn-primary" style="width:100%; margin-bottom:12px" onclick="showNewListModal()">Create New List</button>
-            <button class="btn btn-secondary" style="width:100%; margin-bottom:12px" onclick="generateSummary()">Generate Summary</button>
-            <button class="btn btn-ghost" style="width:100%" onclick="resetToDefaults()">Reset to Defaults</button>
-            <div class="modal-buttons">
-                <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
-            </div>
-        </div>
-    </div>
+    <dialog id="settingsModal" style="border:none;border-radius:24px;padding:28px;max-width:420px;width:90%;background:var(--card-bg);">
+        <h2 style="color:var(--primary);">Settings</h2>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="showNewListModal()">Create New List</button>
+        <button class="btn btn-secondary" style="width:100%;margin-bottom:12px" onclick="generateSummary()">Generate Summary</button>
+        <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
+    </dialog>
 
     <!-- New List Modal -->
     <div class="modal" id="newListModal" style="display:none">
@@ -852,13 +876,12 @@
             });
         }
 
-        function showTripModal() {
+function showTripModal() {
             const list = lists[currentListId];
             document.getElementById('tripCountry').value = list.trip?.country || '';
             document.getElementById('tripStart').value = list.trip?.start || '';
             document.getElementById('tripEnd').value = list.trip?.end || '';
-            document.getElementById('tripNotes').value = list.trip?.notes || '';
-            document.getElementById('tripModal').style.display = 'flex';
+            document.getElementById('tripModal').showModal();
         }
 
         function saveTripInfo() {
@@ -870,20 +893,20 @@
                 notes: document.getElementById('tripNotes').value
             };
             saveLists();
-            document.getElementById('tripModal').style.display = 'none';
+            document.getElementById('tripModal').close();
             loadCurrentList();
         }
 
         function showSettingsModal() { 
-            document.getElementById('settingsModal').style.display = 'flex'; 
+            document.getElementById('settingsModal').showModal(); 
         }
 
-function showNewListModal() {
-            document.getElementById('newListModal').style.display = 'flex';
-            document.getElementById('settingsModal').style.display = 'none';
+        function showNewListModal() {
+            document.getElementById('newListModal').showModal();
+            document.getElementById('settingsModal').close();
         }
 
-function createNewList() {
+        function createNewList() {
             const name = document.getElementById('newListName').value.trim();
             const template = document.getElementById('templateSelect').value;
             if (!name) { alert('Please enter a list name'); return; }
@@ -895,13 +918,75 @@ function createNewList() {
             currentListId = newId;
             saveToHistory();
             saveLists();
-            document.getElementById('newListModal').style.display = 'none';
+            document.getElementById('newListModal').close();
             renderListTabs();
             loadCurrentList();
         }
 
+function generateSummary() {
+            document.getElementById('settingsModal').close();
+            const list = lists[currentListId];
+            let total = 0, checked = 0, bySection = {};
+            
+            list.sections.forEach(s => {
+                bySection[s.name] = { total: s.items.length, packed: 0, items: [] };
+                s.items.forEach(i => {
+                    total++;
+                    if (i.checked) { checked++; bySection[s.name].packed++; }
+                    bySection[s.name].items.push({ name: i.name, qty: i.qty, packed: i.checked });
+                });
+            });
+
+            const trip = list.trip || {};
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            const status = percent === 100 ? 'Fully Packed!' : percent > 50 ? 'Well Underway' : 'Just Started';
+            
+            let summary = `# ${list.name} — ${trip.country || 'Travel'} Summary\n`;
+            summary += `${'='.repeat(list.name.length + 15)}\n\n`;
+            summary += `**Status:** ${status}\n`;
+            summary += `**Progress:** ${checked}/${total} items packed (${percent}%)\n\n`;
+            if (trip.start || trip.end) {
+                summary += `**Trip:** ${trip.start || 'TBD'} → ${trip.end || 'TBD'}\n`;
+                if (trip.notes) summary += `**Notes:** ${trip.notes}\n`;
+                summary += '\n';
+            }
+            summary += `---\n\n## Packed Items (${checked})\n`;
+            Object.entries(bySection).forEach(([sec, data]) => {
+                const packed = data.items.filter(i => i.packed);
+                if (packed.length > 0) {
+                    summary += `\n### ${sec}\n`;
+                    packed.forEach(i => summary += `- [x] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`);
+                }
+            });
+            const unpacked = total - checked;
+            if (unpacked > 0) {
+                summary += `\n---\n\n## Still to Pack (${unpacked})\n`;
+                Object.entries(bySection).forEach(([sec, data]) => {
+                    const unp = data.items.filter(i => !i.packed);
+                    if (unp.length > 0) {
+                        summary += `\n### ${sec}\n`;
+                        unp.forEach(i => summary += `- [ ] ${i.name}${i.qty !== '1' ? ` (${i.qty})` : ''}\n`);
+                    }
+                });
+            }
+            summary += `\n---\n*Generated on ${new Date().toLocaleDateString()}*\n`;
+            
+            currentSummary = summary;
+            document.getElementById('summaryContent').textContent = summary;
+            document.getElementById('summaryModal').showModal();
+        }
+
+        function copySummary() {
+            navigator.clipboard.writeText(currentSummary).then(() => alert('Summary copied!')).catch(() => {
+                const ta = document.createElement('textarea'); ta.value = currentSummary;
+                document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                alert('Summary copied!');
+            });
+        }
+
         function resetToDefaults() {
-            document.getElementById('settingsModal').style.display = 'none';
+            document.getElementById('settingsModal').close();
             if (confirm('Reset all lists to defaults?')) {
                 saveToHistory();
                 lists = { default: JSON.parse(JSON.stringify(templates.general)) };
@@ -910,6 +995,10 @@ function createNewList() {
                 renderListTabs();
                 loadCurrentList();
             }
+        }
+
+        function closeModal(id) { 
+            document.getElementById(id).close();
         }
 
         init();
