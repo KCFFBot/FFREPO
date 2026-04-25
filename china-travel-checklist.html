@@ -328,10 +328,12 @@
 </head>
 <body>
     <div class="container">
-        <header style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+        <header style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
             <h1>Travel Checklist</h1>
-            <button class="btn btn-ghost" onclick="undo()" style="background:#ffffff;color:#000000;border:1px solid #d2d2d7">Undo</button>
-            <button class="btn btn-ghost" onclick="showSettingsModal()" style="background:#ffffff;color:#000000;border:1px solid #d2d2d7">Settings</button>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-ghost" onclick="undo()" style="background:#ffffff;color:#000000;border:1px solid #d2d2d7">Undo</button>
+                <button class="btn btn-ghost" onclick="showSettingsModal()" style="background:#ffffff;color:#000000;border:1px solid #d2d2d7">Settings</button>
+            </div>
         </header>
 
         <div class="list-tabs" id="listSelector"></div>
