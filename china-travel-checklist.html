@@ -853,7 +853,7 @@
             });
         }
 
-function showTripModal() {
+        function showTripModal() {
             const list = lists[currentListId];
             document.getElementById('tripCountry').value = list.trip?.country || '';
             document.getElementById('tripStart').value = list.trip?.start || '';
@@ -912,22 +912,14 @@ function showTripModal() {
         }
 
         function closeModal(id) { 
-            const el = document.getElementById(id);
-            if (el) el.style.display = 'none';
+            document.getElementById(id).style.display = 'none';
         }
         
         function openModal(id) {
-            const el = document.getElementById(id);
-            if (el) el.style.display = 'flex';
+            document.getElementById(id).style.display = 'flex';
         }
 
-        init();
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
-            }
-        });
+init();
     </script>
 </body>
 </html>
