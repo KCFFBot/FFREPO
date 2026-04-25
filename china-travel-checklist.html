@@ -792,7 +792,7 @@
         }
 
         function generateSummary() {
-            closeModal('settingsModal');
+            document.getElementById('settingsModal').style.display = 'none';
             const list = lists[currentListId];
             let total = 0, checked = 0, bySection = {};
             
@@ -841,7 +841,7 @@
             
             currentSummary = summary;
             document.getElementById('summaryContent').textContent = summary;
-            openModal('summaryModal');
+            document.getElementById('summaryModal').style.display = 'flex';
         }
 
         function copySummary() {
@@ -854,12 +854,13 @@
         }
 
         function showTripModal() {
+            alert('Trip clicked');
             const list = lists[currentListId];
             document.getElementById('tripCountry').value = list.trip?.country || '';
             document.getElementById('tripStart').value = list.trip?.start || '';
             document.getElementById('tripEnd').value = list.trip?.end || '';
             document.getElementById('tripNotes').value = list.trip?.notes || '';
-            openModal('tripModal');
+            document.getElementById('tripModal').style.display = 'flex';
         }
 
         function saveTripInfo() {
@@ -871,15 +872,19 @@
                 notes: document.getElementById('tripNotes').value
             };
             saveLists();
-            closeModal('tripModal');
+            document.getElementById('tripModal').style.display = 'none';
             loadCurrentList();
         }
 
-        function showSettingsModal() { openModal('settingsModal'); }
+        function showSettingsModal() { 
+            alert('Settings clicked');
+            document.getElementById('settingsModal').style.display = 'flex'; 
+        }
 
-        function showNewListModal() {
-            openModal('newListModal');
-            closeModal('settingsModal');
+function showNewListModal() {
+            alert('New list clicked');
+            document.getElementById('newListModal').style.display = 'flex';
+            document.getElementById('settingsModal').style.display = 'none';
         }
 
         function createNewList() {
@@ -894,13 +899,13 @@
             currentListId = newId;
             saveToHistory();
             saveLists();
-            closeModal('newListModal');
+            document.getElementById('newListModal').style.display = 'none';
             renderListTabs();
             loadCurrentList();
         }
 
         function resetToDefaults() {
-            closeModal('settingsModal');
+            document.getElementById('settingsModal').style.display = 'none';
             if (confirm('Reset all lists to defaults?')) {
                 saveToHistory();
                 lists = { default: JSON.parse(JSON.stringify(templates.general)) };
@@ -914,12 +919,8 @@
         function closeModal(id) { 
             document.getElementById(id).style.display = 'none';
         }
-        
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
 
-init();
+        init();
     </script>
 </body>
 </html>
