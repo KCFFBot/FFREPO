@@ -904,7 +904,8 @@
         function createNewList() {
             const name = document.getElementById('newListName').value.trim();
             const template = document.getElementById('templateSelect').value;
-            if (!name) return;
+            if (!name) { alert('Please enter a list name'); return; }
+            if (!templates[template]) { alert('Template not found'); return; }
             const newId = 'list_' + Date.now();
             lists[newId] = JSON.parse(JSON.stringify(templates[template]));
             lists[newId].name = name;
