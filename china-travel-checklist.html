@@ -675,7 +675,6 @@
             }
 
             document.getElementById('addSectionDiv').style.display = isListEditable() ? 'block' : 'none';
-            renderStats();
             renderProgress();
             renderChecklist();
         }
@@ -683,18 +682,6 @@
         function formatDate(dateStr) {
             if (!dateStr) return '';
             return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-
-        function renderStats() {
-            const panel = document.getElementById('statsPanel');
-            const list = lists[currentListId];
-            let total = 0, checked = 0;
-            list.sections.forEach(s => s.items.forEach(i => { total++; if (i.checked) checked++; }));
-            panel.innerHTML = `
-                <div class="stat-box"><div class="stat-value">${checked}</div><div class="stat-label">Packed</div></div>
-                <div class="stat-box"><div class="stat-value">${total - checked}</div><div class="stat-label">Remaining</div></div>
-                <div class="stat-box"><div class="stat-value">${list.sections.length}</div><div class="stat-label">Sections</div></div>
-            `;
         }
 
         function renderProgress() {
@@ -758,7 +745,6 @@
             saveToHistory();
             lists[currentListId].sections[sIdx].items[iIdx].checked = !lists[currentListId].sections[sIdx].items[iIdx].checked;
             saveLists();
-            renderStats();
             renderProgress();
             renderChecklist();
         }
@@ -776,7 +762,6 @@
             saveToHistory();
             lists[currentListId].sections[sIdx].items.push({ name, qty, checked: false });
             saveLists();
-            renderStats();
             renderProgress();
             renderChecklist();
         }
@@ -785,7 +770,6 @@
             saveToHistory();
             lists[currentListId].sections[sIdx].items.splice(iIdx, 1);
             saveLists();
-            renderStats();
             renderProgress();
             renderChecklist();
         }
@@ -797,7 +781,6 @@
             lists[currentListId].sections.push({ name, items: [], isDefault: false });
             document.getElementById('newSectionName').value = '';
             saveLists();
-            renderStats();
             renderProgress();
             renderChecklist();
         }
