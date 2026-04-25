@@ -79,15 +79,6 @@
             color: white;
         }
         .tab:hover:not(.active) { background: #333333; }
-        .tab-add {
-            padding: 10px 18px;
-            border-radius: 20px;
-            border: 1px dashed #404040;
-            background: transparent;
-            color: #3b82f6;
-            cursor: pointer;
-            font-size: 14px;
-        }
         
         .trip-info {
             background: #2d2d2d;
@@ -633,12 +624,9 @@
                 btn.onclick = () => switchList(id);
                 container.appendChild(btn);
             });
-            const addBtn = document.createElement('button');
-            addBtn.className = 'tab-add';
-            addBtn.textContent = '+';
-            addBtn.onclick = showNewListModal;
-            container.appendChild(addBtn);
-        }
+            }
+
+        function renderListTabs() {
 
         function switchList(id) {
             currentListId = id;
