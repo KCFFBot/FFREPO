@@ -71,7 +71,27 @@
             border-color: var(--primary);
             color: white;
         }
+        .tab-wrapper { position: relative; display: inline-flex; align-items: center; }
         .tab:hover:not(.active) { background: var(--border); }
+        .tab-delete {
+            display: none;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: none;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+        }
+        .tab-wrapper:hover .tab-delete { display: flex; }
         
         .trip-info {
             background: linear-gradient(135deg, var(--card-bg), #f0f0f5);
@@ -153,7 +173,6 @@
             font-family: inherit;
         }
         .item-qty:focus { border-color: var(--primary); outline: none; }
-        .item-qty[readonly] { background: transparent; border-color: transparent; }
         
         .delete-item-btn {
             background: transparent;
@@ -713,12 +732,32 @@
             const container = document.getElementById('listSelector');
             container.innerHTML = '';
             Object.keys(lists).forEach(id => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tab-wrapper';
                 const btn = document.createElement('button');
                 btn.className = 'tab' + (id === currentListId ? ' active' : '');
                 btn.textContent = lists[id].name;
                 btn.onclick = () => switchList(id);
-                container.appendChild(btn);
+                wrapper.appendChild(btn);
+                const del = document.createElement('button');
+                del.className = 'tab-delete';
+                del.textContent = '×';
+                del.onclick = (e) => { e.stopPropagation(); deleteList(id); };
+                wrapper.appendChild(del);
+                container.appendChild(wrapper);
             });
+        }
+
+        function deleteList(id) {
+            const name = lists[id].name;
+            if (Object.keys(lists).length <= 1) { alert('Cannot delete the only list'); return; }
+            if (!confirm(`Delete "${name}"?`)) return;
+            saveToHistory();
+            delete lists[id];
+            if (currentListId === id) currentListId = Object.keys(lists)[0];
+            saveLists();
+            renderListTabs();
+            loadCurrentList();
         }
 
         function switchList(id) {
@@ -788,7 +827,7 @@
                     itemDiv.innerHTML = `
                         <div class="checkbox ${item.checked ? 'checked' : ''}" onclick="toggleItem(${sIdx}, ${iIdx})"></div>
                         <span class="item-name">${item.name}</span>
-                        <input type="text" class="item-qty" value="${item.qty}" ${!editable ? 'readonly' : ''} onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
+                        <input type="text" class="item-qty" value="${item.qty}" onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
                         ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">×</button>` : ''}
                     `;
                     sectionDiv.appendChild(itemDiv);
