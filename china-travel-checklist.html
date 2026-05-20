@@ -160,11 +160,8 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s;
             padding: 8px;
         }
-        .item:hover .delete-item-btn { opacity: 1; }
         
         .add-item-row {
             display: flex;
@@ -774,8 +771,7 @@
                 const checkedInSection = section.items.filter(i => i.checked).length;
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section';
-                const canDelete = editable && !section.isDefault;
-                sectionDiv.innerHTML = `
+                const canDelete = !section.isDefault;sectionDiv.innerHTML = `
                     <div class="section-header">
                         <h2>${section.name} <span class="section-badge">${checkedInSection}/${section.items.length}</span></h2>
                         ${canDelete ? `<button class="delete-section-btn" onclick="deleteSection(${sIdx})">Delete</button>` : ''}
@@ -789,7 +785,7 @@
                         <div class="checkbox ${item.checked ? 'checked' : ''}" onclick="toggleItem(${sIdx}, ${iIdx})"></div>
                         <span class="item-name">${item.name}</span>
                         <input type="text" class="item-qty" value="${item.qty}" onchange="updateQty(${sIdx}, ${iIdx}, this.value)">
-                        ${editable ? `<button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">×</button>` : ''}
+                        <button class="delete-item-btn" onclick="deleteItem(${sIdx}, ${iIdx})">×</button>
                     `;
                     sectionDiv.appendChild(itemDiv);
                 });
