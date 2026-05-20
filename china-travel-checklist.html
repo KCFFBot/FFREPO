@@ -71,26 +71,7 @@
             border-color: var(--primary);
             color: white;
         }
-        .tab-wrapper { position: relative; display: inline-flex; align-items: center; }
         .tab:hover:not(.active) { background: var(--border); }
-        .tab-delete {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: none;
-            background: var(--danger);
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            padding: 0;
-        }
         
         .trip-info {
             background: linear-gradient(135deg, var(--card-bg), #f0f0f5);
@@ -338,6 +319,7 @@
         <h2>Settings</h2>
         <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="showNewListModal()">Create New List</button>
         <button class="btn btn-secondary" style="width:100%;margin-bottom:12px" onclick="generateSummary()">Generate Summary</button>
+        <button class="btn btn-ghost" style="width:100%;margin-bottom:12px;background:var(--danger);color:white;border:none" onclick="deleteCurrentList()">Delete Current List</button>
         <button class="btn btn-ghost" style="width:100%" onclick="closeModal('settingsModal')">Close</button>
     </dialog>
 
@@ -731,34 +713,12 @@
             const container = document.getElementById('listSelector');
             container.innerHTML = '';
             Object.keys(lists).forEach(id => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'tab-wrapper';
                 const btn = document.createElement('button');
                 btn.className = 'tab' + (id === currentListId ? ' active' : '');
                 btn.textContent = lists[id].name;
                 btn.onclick = () => switchList(id);
-                wrapper.appendChild(btn);
-                if (Object.keys(lists).length > 1) {
-                    const del = document.createElement('button');
-                    del.className = 'tab-delete';
-                    del.textContent = '×';
-                    del.onclick = (e) => { e.stopPropagation(); deleteList(id); };
-                    wrapper.appendChild(del);
-                }
-                container.appendChild(wrapper);
+                container.appendChild(btn);
             });
-        }
-
-        function deleteList(id) {
-            const name = lists[id].name;
-            if (Object.keys(lists).length <= 1) { alert('Cannot delete the only list'); return; }
-            if (!confirm(`Delete "${name}"?`)) return;
-            saveToHistory();
-            delete lists[id];
-            if (currentListId === id) currentListId = Object.keys(lists)[0];
-            saveLists();
-            renderListTabs();
-            loadCurrentList();
         }
 
         function switchList(id) {
@@ -898,6 +858,20 @@
                 renderProgress();
                 renderChecklist();
             }
+        }
+
+        function deleteCurrentList() {
+            const id = currentListId;
+            const name = lists[id].name;
+            if (Object.keys(lists).length <= 1) { alert('Cannot delete the only list'); return; }
+            if (!confirm(`Delete "${name}"?`)) return;
+            closeModal('settingsModal');
+            saveToHistory();
+            delete lists[id];
+            currentListId = Object.keys(lists)[0];
+            saveLists();
+            renderListTabs();
+            loadCurrentList();
         }
 
         function showTripModal() {
