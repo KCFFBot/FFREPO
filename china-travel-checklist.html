@@ -74,7 +74,6 @@
         .tab-wrapper { position: relative; display: inline-flex; align-items: center; }
         .tab:hover:not(.active) { background: var(--border); }
         .tab-delete {
-            display: none;
             position: absolute;
             top: -6px;
             right: -6px;
@@ -86,12 +85,12 @@
             color: white;
             font-size: 11px;
             cursor: pointer;
+            display: flex;
             align-items: center;
             justify-content: center;
             line-height: 1;
             padding: 0;
         }
-        .tab-wrapper:hover .tab-delete { display: flex; }
         
         .trip-info {
             background: linear-gradient(135deg, var(--card-bg), #f0f0f5);
@@ -739,11 +738,13 @@
                 btn.textContent = lists[id].name;
                 btn.onclick = () => switchList(id);
                 wrapper.appendChild(btn);
-                const del = document.createElement('button');
-                del.className = 'tab-delete';
-                del.textContent = '×';
-                del.onclick = (e) => { e.stopPropagation(); deleteList(id); };
-                wrapper.appendChild(del);
+                if (Object.keys(lists).length > 1) {
+                    const del = document.createElement('button');
+                    del.className = 'tab-delete';
+                    del.textContent = '×';
+                    del.onclick = (e) => { e.stopPropagation(); deleteList(id); };
+                    wrapper.appendChild(del);
+                }
                 container.appendChild(wrapper);
             });
         }
